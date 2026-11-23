@@ -1,0 +1,27 @@
+{
+	"luci-app-ddnsox": {
+		"description": "Grant minimal least-privilege access to DDNSox RPC and UCI config",
+		"read": {
+			"ubus": {
+				"luci.ddnsox": [
+					"get_overview",
+					"get_providers",
+					"get_logs",
+					"test_probe"
+				],
+				"network.interface": [ "dump" ]
+			},
+			"uci": [ "ddnsox" ]
+		},
+		"write": {
+			"ubus": {
+				"luci.ddnsox": [
+					"trigger_sync",
+					"service_action",
+					"migrate_legacy"
+				]
+			},
+			"uci": [ "ddnsox" ]
+		}
+	}
+}

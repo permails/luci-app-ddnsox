@@ -1,0 +1,14 @@
+#!/bin/sh
+
+[ -f /etc/config/ddns ] || exit 0
+[ -f /etc/config/ddnsox ] || exit 0
+
+# Only auto-migrate when ddnsox has no user-defined rules yet
+if ! uci -q show ddnsox | grep -q '^ddnsox\.[^=]*=rule$'; then
+	/usr/bin/ucode -e '
+		import * as migrate from "/usr/share/ddnsox/lib/migrate.uc";
+		migrate.run({ dry_run: false });
+	' >/dev/null 2>&1 || true
+fi
+
+exit 0

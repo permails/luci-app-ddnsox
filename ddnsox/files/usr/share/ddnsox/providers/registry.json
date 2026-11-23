@@ -1,0 +1,2450 @@
+{
+  "providers": [
+    {
+      "id": "cloudflare.com-v4",
+      "name": "Cloudflare (API v4)",
+      "adapter": "cloudflare_v4.uc",
+      "supports_ipv6": true,
+      "supports_ttl": true,
+      "supports_proxied": true,
+      "fields": [
+        {
+          "key": "password",
+          "label": "API Token / Global Key",
+          "secret": true,
+          "required": true,
+          "placeholder": "Cloudflare API Token (recommended)"
+        },
+        {
+          "key": "username",
+          "label": "Account Email (Global Key only)",
+          "secret": false,
+          "required": false,
+          "placeholder": "Leave empty when using API Token"
+        }
+      ]
+    },
+    {
+      "id": "aliyun.com",
+      "name": "Aliyun DNS (阿里云)",
+      "adapter": "aliyun.uc",
+      "supports_ipv6": true,
+      "supports_ttl": true,
+      "supports_proxied": false,
+      "fields": [
+        {
+          "key": "username",
+          "label": "AccessKey ID",
+          "secret": false,
+          "required": true,
+          "placeholder": "LTAI5t..."
+        },
+        {
+          "key": "password",
+          "label": "AccessKey Secret",
+          "secret": true,
+          "required": true,
+          "placeholder": "Aliyun AccessKey Secret"
+        }
+      ]
+    },
+    {
+      "id": "dnspod.cn-v3",
+      "name": "DNSPod / Tencent Cloud (v3)",
+      "adapter": "dnspod.uc",
+      "supports_ipv6": true,
+      "supports_ttl": true,
+      "supports_proxied": false,
+      "fields": [
+        {
+          "key": "username",
+          "label": "Token ID",
+          "secret": false,
+          "required": true,
+          "placeholder": "DNSPod API Token ID"
+        },
+        {
+          "key": "password",
+          "label": "Token Secret",
+          "secret": true,
+          "required": true,
+          "placeholder": "DNSPod API Token"
+        }
+      ]
+    },
+    {
+      "id": "dnspod.cn",
+      "name": "DNSPod.cn",
+      "adapter": "dnspod.uc",
+      "supports_ipv6": true,
+      "supports_ttl": true,
+      "supports_proxied": false,
+      "fields": [
+        {
+          "key": "username",
+          "label": "Token ID",
+          "secret": false,
+          "required": true,
+          "placeholder": "DNSPod API Token ID"
+        },
+        {
+          "key": "password",
+          "label": "Token Secret",
+          "secret": true,
+          "required": true,
+          "placeholder": "DNSPod API Token"
+        }
+      ]
+    },
+    {
+      "id": "duckdns.org",
+      "name": "duckdns.org",
+      "adapter": "url_template.uc",
+      "supports_ipv6": true,
+      "supports_ttl": false,
+      "supports_proxied": false,
+      "url_v4": "https://www.duckdns.org/update?domains=[DOMAIN]&token=[PASSWORD]&ip=[IP]",
+      "url_v6": "https://www.duckdns.org/update?domains=[DOMAIN]&token=[PASSWORD]&ipv6=[IP]",
+      "answer": "OK",
+      "fields": [
+        {
+          "key": "password",
+          "label": "Password / Token",
+          "secret": true,
+          "required": true,
+          "placeholder": ""
+        }
+      ]
+    },
+    {
+      "id": "porkbun.com-v3",
+      "name": "Porkbun (API v3)",
+      "adapter": "porkbun_v3.uc",
+      "supports_ipv6": true,
+      "supports_ttl": true,
+      "supports_proxied": false,
+      "fields": [
+        {
+          "key": "username",
+          "label": "API Key",
+          "secret": false,
+          "required": true,
+          "placeholder": "pk1_..."
+        },
+        {
+          "key": "password",
+          "label": "Secret API Key",
+          "secret": true,
+          "required": true,
+          "placeholder": "sk1_..."
+        }
+      ]
+    },
+    {
+      "id": "no-ip.com",
+      "name": "No-IP.com",
+      "adapter": "dyndns2.uc",
+      "supports_ipv6": true,
+      "supports_ttl": true,
+      "supports_proxied": false,
+      "fields": [
+        {
+          "key": "username",
+          "label": "Username",
+          "secret": false,
+          "required": true,
+          "placeholder": "No-IP username"
+        },
+        {
+          "key": "password",
+          "label": "Password",
+          "secret": true,
+          "required": true,
+          "placeholder": "No-IP password"
+        }
+      ]
+    },
+    {
+      "id": "dyn.com",
+      "name": "dyn.com",
+      "adapter": "url_template.uc",
+      "supports_ipv6": true,
+      "supports_ttl": false,
+      "supports_proxied": false,
+      "url_v4": "https://[USERNAME]:[PASSWORD]@members.dyndns.org/v3/update?hostname=[DOMAIN]&myip=[IP]",
+      "url_v6": "https://[USERNAME]:[PASSWORD]@members.dyndns.org/v3/update?hostname=[DOMAIN]&myip=[IP]",
+      "answer": "good|nochg",
+      "fields": [
+        {
+          "key": "username",
+          "label": "Username / API Key",
+          "secret": false,
+          "required": true,
+          "placeholder": ""
+        },
+        {
+          "key": "password",
+          "label": "Password / Token",
+          "secret": true,
+          "required": true,
+          "placeholder": ""
+        }
+      ]
+    },
+    {
+      "id": "oray.com",
+      "name": "oray.com",
+      "adapter": "url_template.uc",
+      "supports_ipv6": false,
+      "supports_ttl": false,
+      "supports_proxied": false,
+      "url_v4": "https://[USERNAME]:[PASSWORD]@ddns.oray.com/ph/update?hostname=[DOMAIN]&myip=[IP]",
+      "url_v6": "",
+      "answer": "",
+      "fields": [
+        {
+          "key": "username",
+          "label": "Username / API Key",
+          "secret": false,
+          "required": true,
+          "placeholder": ""
+        },
+        {
+          "key": "password",
+          "label": "Password / Token",
+          "secret": true,
+          "required": true,
+          "placeholder": ""
+        }
+      ]
+    },
+    {
+      "id": "3322.org",
+      "name": "3322.org",
+      "adapter": "url_template.uc",
+      "supports_ipv6": false,
+      "supports_ttl": false,
+      "supports_proxied": false,
+      "url_v4": "http://[USERNAME]:[PASSWORD]@members.3322.org/dyndns/update?system=dyndns&hostname=[DOMAIN]&myip=[IP]",
+      "url_v6": "",
+      "answer": "",
+      "fields": [
+        {
+          "key": "username",
+          "label": "Username / API Key",
+          "secret": false,
+          "required": true,
+          "placeholder": ""
+        },
+        {
+          "key": "password",
+          "label": "Password / Token",
+          "secret": true,
+          "required": true,
+          "placeholder": ""
+        }
+      ]
+    },
+    {
+      "id": "afraid.org-basicauth",
+      "name": "afraid.org-basicauth",
+      "adapter": "url_template.uc",
+      "supports_ipv6": true,
+      "supports_ttl": false,
+      "supports_proxied": false,
+      "url_v4": "https://[USERNAME]:[PASSWORD]@freedns.afraid.org/nic/update?hostname=[DOMAIN]&myip=[IP]",
+      "url_v6": "https://[USERNAME]:[PASSWORD]@freedns.afraid.org/nic/update?hostname=[DOMAIN]&myip=[IP]",
+      "answer": "",
+      "fields": [
+        {
+          "key": "username",
+          "label": "Username / API Key",
+          "secret": false,
+          "required": true,
+          "placeholder": ""
+        },
+        {
+          "key": "password",
+          "label": "Password / Token",
+          "secret": true,
+          "required": true,
+          "placeholder": ""
+        }
+      ]
+    },
+    {
+      "id": "afraid.org-keyauth",
+      "name": "afraid.org-keyauth",
+      "adapter": "url_template.uc",
+      "supports_ipv6": true,
+      "supports_ttl": false,
+      "supports_proxied": false,
+      "url_v4": "https://freedns.afraid.org/dynamic/update.php?[PASSWORD]&address=[IP]",
+      "url_v6": "https://freedns.afraid.org/dynamic/update.php?[PASSWORD]&address=[IP]",
+      "answer": "",
+      "fields": [
+        {
+          "key": "password",
+          "label": "Password / Token",
+          "secret": true,
+          "required": true,
+          "placeholder": ""
+        }
+      ]
+    },
+    {
+      "id": "afraid.org-v2-basic",
+      "name": "afraid.org-v2-basic",
+      "adapter": "url_template.uc",
+      "supports_ipv6": true,
+      "supports_ttl": false,
+      "supports_proxied": false,
+      "url_v4": "https://[USERNAME]:[PASSWORD]@sync.afraid.org/u/?h=[DOMAIN]&ip=[IP]",
+      "url_v6": "https://[USERNAME]:[PASSWORD]@v6.sync.afraid.org/u/?h=[DOMAIN]&ip=[IP]",
+      "answer": "",
+      "fields": [
+        {
+          "key": "username",
+          "label": "Username / API Key",
+          "secret": false,
+          "required": true,
+          "placeholder": ""
+        },
+        {
+          "key": "password",
+          "label": "Password / Token",
+          "secret": true,
+          "required": true,
+          "placeholder": ""
+        }
+      ]
+    },
+    {
+      "id": "afraid.org-v2-token",
+      "name": "afraid.org-v2-token",
+      "adapter": "url_template.uc",
+      "supports_ipv6": true,
+      "supports_ttl": false,
+      "supports_proxied": false,
+      "url_v4": "https://sync.afraid.org/u/[PASSWORD]/?address=[IP]",
+      "url_v6": "https://v6.sync.afraid.org/u/[PASSWORD]/?address=[IP]",
+      "answer": "",
+      "fields": [
+        {
+          "key": "password",
+          "label": "Password / Token",
+          "secret": true,
+          "required": true,
+          "placeholder": ""
+        }
+      ]
+    },
+    {
+      "id": "all-inkl.com",
+      "name": "all-inkl.com",
+      "adapter": "url_template.uc",
+      "supports_ipv6": true,
+      "supports_ttl": false,
+      "supports_proxied": false,
+      "url_v4": "https://[USERNAME]:[PASSWORD]@dyndns.kasserver.com/?myip=[IP]",
+      "url_v6": "https://[USERNAME]:[PASSWORD]@dyndns.kasserver.com/?myip=[IP]",
+      "answer": "",
+      "fields": [
+        {
+          "key": "username",
+          "label": "Username / API Key",
+          "secret": false,
+          "required": true,
+          "placeholder": ""
+        },
+        {
+          "key": "password",
+          "label": "Password / Token",
+          "secret": true,
+          "required": true,
+          "placeholder": ""
+        }
+      ]
+    },
+    {
+      "id": "alviy.com",
+      "name": "alviy.com",
+      "adapter": "url_template.uc",
+      "supports_ipv6": false,
+      "supports_ttl": false,
+      "supports_proxied": false,
+      "url_v4": "https://[USERNAME]:[PASSWORD]@dynupdate.alviy.com/nic/update?hostname=[DOMAIN]&myip=[IP]",
+      "url_v6": "",
+      "answer": "good|nochg",
+      "fields": [
+        {
+          "key": "username",
+          "label": "Username / API Key",
+          "secret": false,
+          "required": true,
+          "placeholder": ""
+        },
+        {
+          "key": "password",
+          "label": "Password / Token",
+          "secret": true,
+          "required": true,
+          "placeholder": ""
+        }
+      ]
+    },
+    {
+      "id": "apertodns.com",
+      "name": "apertodns.com",
+      "adapter": "url_template.uc",
+      "supports_ipv6": true,
+      "supports_ttl": false,
+      "supports_proxied": false,
+      "url_v4": "https://[USERNAME]:[PASSWORD]@api.apertodns.com/nic/update?hostname=[DOMAIN]&myip=[IP]",
+      "url_v6": "https://[USERNAME]:[PASSWORD]@api.apertodns.com/nic/update?hostname=[DOMAIN]&myip=[IP]",
+      "answer": "good|nochg",
+      "fields": [
+        {
+          "key": "username",
+          "label": "Username / API Key",
+          "secret": false,
+          "required": true,
+          "placeholder": ""
+        },
+        {
+          "key": "password",
+          "label": "Password / Token",
+          "secret": true,
+          "required": true,
+          "placeholder": ""
+        }
+      ]
+    },
+    {
+      "id": "apertodns.com-token",
+      "name": "apertodns.com-token",
+      "adapter": "url_template.uc",
+      "supports_ipv6": true,
+      "supports_ttl": false,
+      "supports_proxied": false,
+      "url_v4": "https://[PASSWORD]:[PASSWORD]@api.apertodns.com/nic/update?hostname=[DOMAIN]&myip=[IP]",
+      "url_v6": "https://[PASSWORD]:[PASSWORD]@api.apertodns.com/nic/update?hostname=[DOMAIN]&myip=[IP]",
+      "answer": "good|nochg",
+      "fields": [
+        {
+          "key": "password",
+          "label": "Password / Token",
+          "secret": true,
+          "required": true,
+          "placeholder": ""
+        }
+      ]
+    },
+    {
+      "id": "beget.com",
+      "name": "beget.com",
+      "adapter": "url_template.uc",
+      "supports_ipv6": true,
+      "supports_ttl": false,
+      "supports_proxied": false,
+      "url_v4": "",
+      "url_v6": "",
+      "answer": "",
+      "fields": [
+        {
+          "key": "username",
+          "label": "Username / API Key",
+          "secret": false,
+          "required": true,
+          "placeholder": ""
+        },
+        {
+          "key": "password",
+          "label": "Password / Token",
+          "secret": true,
+          "required": true,
+          "placeholder": ""
+        }
+      ]
+    },
+    {
+      "id": "bind-nsupdate",
+      "name": "bind-nsupdate",
+      "adapter": "url_template.uc",
+      "supports_ipv6": true,
+      "supports_ttl": false,
+      "supports_proxied": false,
+      "url_v4": "",
+      "url_v6": "",
+      "answer": "",
+      "fields": [
+        {
+          "key": "username",
+          "label": "Username / API Key",
+          "secret": false,
+          "required": true,
+          "placeholder": ""
+        },
+        {
+          "key": "password",
+          "label": "Password / Token",
+          "secret": true,
+          "required": true,
+          "placeholder": ""
+        }
+      ]
+    },
+    {
+      "id": "blazingfast.io",
+      "name": "blazingfast.io",
+      "adapter": "url_template.uc",
+      "supports_ipv6": true,
+      "supports_ttl": false,
+      "supports_proxied": false,
+      "url_v4": "",
+      "url_v6": "",
+      "answer": "",
+      "fields": [
+        {
+          "key": "username",
+          "label": "Username / API Key",
+          "secret": false,
+          "required": true,
+          "placeholder": ""
+        },
+        {
+          "key": "password",
+          "label": "Password / Token",
+          "secret": true,
+          "required": true,
+          "placeholder": ""
+        }
+      ]
+    },
+    {
+      "id": "changeip.com",
+      "name": "changeip.com",
+      "adapter": "url_template.uc",
+      "supports_ipv6": false,
+      "supports_ttl": false,
+      "supports_proxied": false,
+      "url_v4": "https://[USERNAME]:[PASSWORD]@nic.changeip.com/nic/update?u=[USERNAME]&p=[PASSWORD]&cmd=update&hostname=[DOMAIN]&ip=[IP]",
+      "url_v6": "",
+      "answer": "Successful",
+      "fields": [
+        {
+          "key": "username",
+          "label": "Username / API Key",
+          "secret": false,
+          "required": true,
+          "placeholder": ""
+        },
+        {
+          "key": "password",
+          "label": "Password / Token",
+          "secret": true,
+          "required": true,
+          "placeholder": ""
+        }
+      ]
+    },
+    {
+      "id": "cloud.google.com-v1",
+      "name": "cloud.google.com-v1",
+      "adapter": "url_template.uc",
+      "supports_ipv6": true,
+      "supports_ttl": false,
+      "supports_proxied": false,
+      "url_v4": "",
+      "url_v6": "",
+      "answer": "",
+      "fields": [
+        {
+          "key": "username",
+          "label": "Username / API Key",
+          "secret": false,
+          "required": true,
+          "placeholder": ""
+        },
+        {
+          "key": "password",
+          "label": "Password / Token",
+          "secret": true,
+          "required": true,
+          "placeholder": ""
+        }
+      ]
+    },
+    {
+      "id": "core-networks.de",
+      "name": "core-networks.de",
+      "adapter": "url_template.uc",
+      "supports_ipv6": true,
+      "supports_ttl": false,
+      "supports_proxied": false,
+      "url_v4": "https://[USERNAME]:[PASSWORD]@dyndns.core-networks.de/?hostname=[DOMAIN]&myip=[IP]&keepipv6=1",
+      "url_v6": "https://[USERNAME]:[PASSWORD]@dyndns.core-networks.de/?hostname=[DOMAIN]&myip=[IP]&keepipv4=1",
+      "answer": "good",
+      "fields": [
+        {
+          "key": "username",
+          "label": "Username / API Key",
+          "secret": false,
+          "required": true,
+          "placeholder": ""
+        },
+        {
+          "key": "password",
+          "label": "Password / Token",
+          "secret": true,
+          "required": true,
+          "placeholder": ""
+        }
+      ]
+    },
+    {
+      "id": "ddo.jp",
+      "name": "ddo.jp",
+      "adapter": "url_template.uc",
+      "supports_ipv6": false,
+      "supports_ttl": false,
+      "supports_proxied": false,
+      "url_v4": "http://free.ddo.jp/dnsupdate.php?dn=[DOMAIN]&pw=[PASSWORD]&ip=[IP]",
+      "url_v6": "",
+      "answer": "",
+      "fields": [
+        {
+          "key": "password",
+          "label": "Password / Token",
+          "secret": true,
+          "required": true,
+          "placeholder": ""
+        }
+      ]
+    },
+    {
+      "id": "desec.io",
+      "name": "desec.io",
+      "adapter": "url_template.uc",
+      "supports_ipv6": true,
+      "supports_ttl": false,
+      "supports_proxied": false,
+      "url_v4": "https://update.dedyn.io/update?username=[USERNAME]&password=[PASSWORD]&hostname=[DOMAIN]&myipv4=[IP]&myipv6=preserve",
+      "url_v6": "https://update.dedyn.io/update?username=[USERNAME]&password=[PASSWORD]&hostname=[DOMAIN]&myipv6=[IP]&myipv4=preserve",
+      "answer": "good|nochg",
+      "fields": [
+        {
+          "key": "username",
+          "label": "Username / API Key",
+          "secret": false,
+          "required": true,
+          "placeholder": ""
+        },
+        {
+          "key": "password",
+          "label": "Password / Token",
+          "secret": true,
+          "required": true,
+          "placeholder": ""
+        }
+      ]
+    },
+    {
+      "id": "dhis.org",
+      "name": "dhis.org",
+      "adapter": "url_template.uc",
+      "supports_ipv6": true,
+      "supports_ttl": false,
+      "supports_proxied": false,
+      "url_v4": "http://[USERNAME]:[PASSWORD]@is.dhis.org/",
+      "url_v6": "http://[USERNAME]:[PASSWORD]@is.dhis.org/",
+      "answer": "",
+      "fields": [
+        {
+          "key": "username",
+          "label": "Username / API Key",
+          "secret": false,
+          "required": true,
+          "placeholder": ""
+        },
+        {
+          "key": "password",
+          "label": "Password / Token",
+          "secret": true,
+          "required": true,
+          "placeholder": ""
+        }
+      ]
+    },
+    {
+      "id": "digitalocean.com-v2",
+      "name": "digitalocean.com-v2",
+      "adapter": "url_template.uc",
+      "supports_ipv6": true,
+      "supports_ttl": false,
+      "supports_proxied": false,
+      "url_v4": "",
+      "url_v6": "",
+      "answer": "",
+      "fields": [
+        {
+          "key": "username",
+          "label": "Username / API Key",
+          "secret": false,
+          "required": true,
+          "placeholder": ""
+        },
+        {
+          "key": "password",
+          "label": "Password / Token",
+          "secret": true,
+          "required": true,
+          "placeholder": ""
+        }
+      ]
+    },
+    {
+      "id": "dnsever.com",
+      "name": "dnsever.com",
+      "adapter": "url_template.uc",
+      "supports_ipv6": false,
+      "supports_ttl": false,
+      "supports_proxied": false,
+      "url_v4": "https://[USERNAME]:[PASSWORD]@dyna.dnsever.com/update.php?host[[DOMAIN]]",
+      "url_v6": "",
+      "answer": "",
+      "fields": [
+        {
+          "key": "username",
+          "label": "Username / API Key",
+          "secret": false,
+          "required": true,
+          "placeholder": ""
+        },
+        {
+          "key": "password",
+          "label": "Password / Token",
+          "secret": true,
+          "required": true,
+          "placeholder": ""
+        }
+      ]
+    },
+    {
+      "id": "dnsexit.com",
+      "name": "dnsexit.com",
+      "adapter": "url_template.uc",
+      "supports_ipv6": false,
+      "supports_ttl": false,
+      "supports_proxied": false,
+      "url_v4": "https://update.dnsexit.com/RemoteUpdate.sv?login=[USERNAME]&password=[PASSWORD]&host=[DOMAIN]&myip=[IP]",
+      "url_v6": "",
+      "answer": "",
+      "fields": [
+        {
+          "key": "username",
+          "label": "Username / API Key",
+          "secret": false,
+          "required": true,
+          "placeholder": ""
+        },
+        {
+          "key": "password",
+          "label": "Password / Token",
+          "secret": true,
+          "required": true,
+          "placeholder": ""
+        }
+      ]
+    },
+    {
+      "id": "dnshome.de",
+      "name": "dnshome.de",
+      "adapter": "url_template.uc",
+      "supports_ipv6": true,
+      "supports_ttl": false,
+      "supports_proxied": false,
+      "url_v4": "https://[USERNAME]:[PASSWORD]@www.dnshome.de/dyndns.php?hostname=[DOMAIN]&ip=[IP]",
+      "url_v6": "https://[USERNAME]:[PASSWORD]@www.dnshome.de/dyndns.php?hostname=[DOMAIN]&ip6=[IP]",
+      "answer": "",
+      "fields": [
+        {
+          "key": "username",
+          "label": "Username / API Key",
+          "secret": false,
+          "required": true,
+          "placeholder": ""
+        },
+        {
+          "key": "password",
+          "label": "Password / Token",
+          "secret": true,
+          "required": true,
+          "placeholder": ""
+        }
+      ]
+    },
+    {
+      "id": "dnsimple.com-v2",
+      "name": "dnsimple.com-v2",
+      "adapter": "url_template.uc",
+      "supports_ipv6": true,
+      "supports_ttl": false,
+      "supports_proxied": false,
+      "url_v4": "",
+      "url_v6": "",
+      "answer": "",
+      "fields": [
+        {
+          "key": "username",
+          "label": "Username / API Key",
+          "secret": false,
+          "required": true,
+          "placeholder": ""
+        },
+        {
+          "key": "password",
+          "label": "Password / Token",
+          "secret": true,
+          "required": true,
+          "placeholder": ""
+        }
+      ]
+    },
+    {
+      "id": "dnsmadeeasy.com",
+      "name": "dnsmadeeasy.com",
+      "adapter": "url_template.uc",
+      "supports_ipv6": false,
+      "supports_ttl": false,
+      "supports_proxied": false,
+      "url_v4": "https://cp.dnsmadeeasy.com/servlet/updateip?username=[USERNAME]&password=[PASSWORD]&id=[DOMAIN]&ip=[IP]",
+      "url_v6": "",
+      "answer": "success|ip-same",
+      "fields": [
+        {
+          "key": "username",
+          "label": "Username / API Key",
+          "secret": false,
+          "required": true,
+          "placeholder": ""
+        },
+        {
+          "key": "password",
+          "label": "Password / Token",
+          "secret": true,
+          "required": true,
+          "placeholder": ""
+        }
+      ]
+    },
+    {
+      "id": "dnsomatic.com",
+      "name": "dnsomatic.com",
+      "adapter": "url_template.uc",
+      "supports_ipv6": false,
+      "supports_ttl": false,
+      "supports_proxied": false,
+      "url_v4": "https://[USERNAME]:[PASSWORD]@updates.dnsomatic.com/nic/update?hostname=[DOMAIN]&myip=[IP]",
+      "url_v6": "",
+      "answer": "good|nochg",
+      "fields": [
+        {
+          "key": "username",
+          "label": "Username / API Key",
+          "secret": false,
+          "required": true,
+          "placeholder": ""
+        },
+        {
+          "key": "password",
+          "label": "Password / Token",
+          "secret": true,
+          "required": true,
+          "placeholder": ""
+        }
+      ]
+    },
+    {
+      "id": "do.de",
+      "name": "do.de",
+      "adapter": "url_template.uc",
+      "supports_ipv6": true,
+      "supports_ttl": false,
+      "supports_proxied": false,
+      "url_v4": "https://ddns.do.de/?myip=[IP]&hostname=[DOMAIN]&username=[USERNAME]&password=[PASSWORD]",
+      "url_v6": "https://ddns.do.de/?myip=[IP]&hostname=[DOMAIN]&username=[USERNAME]&password=[PASSWORD]",
+      "answer": "good|nochg",
+      "fields": [
+        {
+          "key": "username",
+          "label": "Username / API Key",
+          "secret": false,
+          "required": true,
+          "placeholder": ""
+        },
+        {
+          "key": "password",
+          "label": "Password / Token",
+          "secret": true,
+          "required": true,
+          "placeholder": ""
+        }
+      ]
+    },
+    {
+      "id": "dondominio.com",
+      "name": "dondominio.com",
+      "adapter": "url_template.uc",
+      "supports_ipv6": false,
+      "supports_ttl": false,
+      "supports_proxied": false,
+      "url_v4": "https://dondns.dondominio.com/plain/?user=[USERNAME]&password=[PASSWORD]&host=[DOMAIN]&ip=[IP]",
+      "url_v6": "",
+      "answer": "OK",
+      "fields": [
+        {
+          "key": "username",
+          "label": "Username / API Key",
+          "secret": false,
+          "required": true,
+          "placeholder": ""
+        },
+        {
+          "key": "password",
+          "label": "Password / Token",
+          "secret": true,
+          "required": true,
+          "placeholder": ""
+        }
+      ]
+    },
+    {
+      "id": "duiadns.net",
+      "name": "duiadns.net",
+      "adapter": "url_template.uc",
+      "supports_ipv6": true,
+      "supports_ttl": false,
+      "supports_proxied": false,
+      "url_v4": "http://ip.duiadns.net/dynamic.duia?host=[DOMAIN]&password=[PASSWORD]&ip4=[IP]",
+      "url_v6": "http://ip.duiadns.net/dynamic.duia?host=[DOMAIN]&password=[PASSWORD]&ip6=[IP]",
+      "answer": "",
+      "fields": [
+        {
+          "key": "password",
+          "label": "Password / Token",
+          "secret": true,
+          "required": true,
+          "placeholder": ""
+        }
+      ]
+    },
+    {
+      "id": "dy.fi",
+      "name": "dy.fi",
+      "adapter": "url_template.uc",
+      "supports_ipv6": false,
+      "supports_ttl": false,
+      "supports_proxied": false,
+      "url_v4": "https://[USERNAME]:[PASSWORD]@www.dy.fi/nic/update?hostname=[DOMAIN]",
+      "url_v6": "",
+      "answer": "good|nochg",
+      "fields": [
+        {
+          "key": "username",
+          "label": "Username / API Key",
+          "secret": false,
+          "required": true,
+          "placeholder": ""
+        },
+        {
+          "key": "password",
+          "label": "Password / Token",
+          "secret": true,
+          "required": true,
+          "placeholder": ""
+        }
+      ]
+    },
+    {
+      "id": "dyndns.it",
+      "name": "dyndns.it",
+      "adapter": "url_template.uc",
+      "supports_ipv6": false,
+      "supports_ttl": false,
+      "supports_proxied": false,
+      "url_v4": "https://[USERNAME]:[PASSWORD]@update.dyndns.it/nic/update?system=dyndns&hostname=[DOMAIN]&myip=[IP]",
+      "url_v6": "",
+      "answer": "good|nochg",
+      "fields": [
+        {
+          "key": "username",
+          "label": "Username / API Key",
+          "secret": false,
+          "required": true,
+          "placeholder": ""
+        },
+        {
+          "key": "password",
+          "label": "Password / Token",
+          "secret": true,
+          "required": true,
+          "placeholder": ""
+        }
+      ]
+    },
+    {
+      "id": "dyndns.org",
+      "name": "dyndns.org",
+      "adapter": "url_template.uc",
+      "supports_ipv6": true,
+      "supports_ttl": false,
+      "supports_proxied": false,
+      "url_v4": "https://[USERNAME]:[PASSWORD]@members.dyndns.org/v3/update?hostname=[DOMAIN]&myip=[IP]",
+      "url_v6": "https://[USERNAME]:[PASSWORD]@members.dyndns.org/v3/update?hostname=[DOMAIN]&myip=[IP]",
+      "answer": "good|nochg",
+      "fields": [
+        {
+          "key": "username",
+          "label": "Username / API Key",
+          "secret": false,
+          "required": true,
+          "placeholder": ""
+        },
+        {
+          "key": "password",
+          "label": "Password / Token",
+          "secret": true,
+          "required": true,
+          "placeholder": ""
+        }
+      ]
+    },
+    {
+      "id": "dynu.com",
+      "name": "dynu.com",
+      "adapter": "url_template.uc",
+      "supports_ipv6": true,
+      "supports_ttl": false,
+      "supports_proxied": false,
+      "url_v4": "https://api.dynu.com/nic/update?hostname=[DOMAIN]&myip=[IP]&username=[USERNAME]&password=[PASSWORD]",
+      "url_v6": "https://api.dynu.com/nic/update?hostname=[DOMAIN]&myip=no&myipv6=[IP]&username=[USERNAME]&password=[PASSWORD]",
+      "answer": "",
+      "fields": [
+        {
+          "key": "username",
+          "label": "Username / API Key",
+          "secret": false,
+          "required": true,
+          "placeholder": ""
+        },
+        {
+          "key": "password",
+          "label": "Password / Token",
+          "secret": true,
+          "required": true,
+          "placeholder": ""
+        }
+      ]
+    },
+    {
+      "id": "dynv6.com",
+      "name": "dynv6.com",
+      "adapter": "url_template.uc",
+      "supports_ipv6": true,
+      "supports_ttl": false,
+      "supports_proxied": false,
+      "url_v4": "https://dynv6.com/api/update?hostname=[DOMAIN]&token=[PASSWORD]&ipv4=[IP]",
+      "url_v6": "https://dynv6.com/api/update?hostname=[DOMAIN]&token=[PASSWORD]&ipv6=[IP]",
+      "answer": "updated|unchanged",
+      "fields": [
+        {
+          "key": "password",
+          "label": "Password / Token",
+          "secret": true,
+          "required": true,
+          "placeholder": ""
+        }
+      ]
+    },
+    {
+      "id": "easydns.com",
+      "name": "easydns.com",
+      "adapter": "url_template.uc",
+      "supports_ipv6": true,
+      "supports_ttl": false,
+      "supports_proxied": false,
+      "url_v4": "https://[USERNAME]:[PASSWORD]@api.cp.easydns.com/dyn/generic.php?hostname=[DOMAIN]&myip=[IP]",
+      "url_v6": "https://[USERNAME]:[PASSWORD]@api.cp.easydns.com/dyn/generic.php?hostname=[DOMAIN]&myip=[IP]",
+      "answer": "OK|NOERROR",
+      "fields": [
+        {
+          "key": "username",
+          "label": "Username / API Key",
+          "secret": false,
+          "required": true,
+          "placeholder": ""
+        },
+        {
+          "key": "password",
+          "label": "Password / Token",
+          "secret": true,
+          "required": true,
+          "placeholder": ""
+        }
+      ]
+    },
+    {
+      "id": "eurodns.com",
+      "name": "eurodns.com",
+      "adapter": "url_template.uc",
+      "supports_ipv6": true,
+      "supports_ttl": false,
+      "supports_proxied": false,
+      "url_v4": "https://[USERNAME]:[PASSWORD]@update.eurodyndns.org/update/?hostname=[DOMAIN]&myip=[IP]",
+      "url_v6": "https://[USERNAME]:[PASSWORD]@update.eurodyndns.org/update/?hostname=[DOMAIN]&myip=[IP]",
+      "answer": "good|nochg",
+      "fields": [
+        {
+          "key": "username",
+          "label": "Username / API Key",
+          "secret": false,
+          "required": true,
+          "placeholder": ""
+        },
+        {
+          "key": "password",
+          "label": "Password / Token",
+          "secret": true,
+          "required": true,
+          "placeholder": ""
+        }
+      ]
+    },
+    {
+      "id": "freedns.42.pl",
+      "name": "freedns.42.pl",
+      "adapter": "url_template.uc",
+      "supports_ipv6": false,
+      "supports_ttl": false,
+      "supports_proxied": false,
+      "url_v4": "",
+      "url_v6": "",
+      "answer": "",
+      "fields": [
+        {
+          "key": "username",
+          "label": "Username / API Key",
+          "secret": false,
+          "required": true,
+          "placeholder": ""
+        },
+        {
+          "key": "password",
+          "label": "Password / Token",
+          "secret": true,
+          "required": true,
+          "placeholder": ""
+        }
+      ]
+    },
+    {
+      "id": "gandi.net",
+      "name": "gandi.net",
+      "adapter": "url_template.uc",
+      "supports_ipv6": true,
+      "supports_ttl": false,
+      "supports_proxied": false,
+      "url_v4": "",
+      "url_v6": "",
+      "answer": "",
+      "fields": [
+        {
+          "key": "username",
+          "label": "Username / API Key",
+          "secret": false,
+          "required": true,
+          "placeholder": ""
+        },
+        {
+          "key": "password",
+          "label": "Password / Token",
+          "secret": true,
+          "required": true,
+          "placeholder": ""
+        }
+      ]
+    },
+    {
+      "id": "gandi.net-v2",
+      "name": "gandi.net-v2",
+      "adapter": "url_template.uc",
+      "supports_ipv6": true,
+      "supports_ttl": false,
+      "supports_proxied": false,
+      "url_v4": "",
+      "url_v6": "",
+      "answer": "",
+      "fields": [
+        {
+          "key": "username",
+          "label": "Username / API Key",
+          "secret": false,
+          "required": true,
+          "placeholder": ""
+        },
+        {
+          "key": "password",
+          "label": "Password / Token",
+          "secret": true,
+          "required": true,
+          "placeholder": ""
+        }
+      ]
+    },
+    {
+      "id": "godaddy.com-v1",
+      "name": "godaddy.com-v1",
+      "adapter": "url_template.uc",
+      "supports_ipv6": true,
+      "supports_ttl": false,
+      "supports_proxied": false,
+      "url_v4": "",
+      "url_v6": "",
+      "answer": "",
+      "fields": [
+        {
+          "key": "username",
+          "label": "Username / API Key",
+          "secret": false,
+          "required": true,
+          "placeholder": ""
+        },
+        {
+          "key": "password",
+          "label": "Password / Token",
+          "secret": true,
+          "required": true,
+          "placeholder": ""
+        }
+      ]
+    },
+    {
+      "id": "goip.de",
+      "name": "goip.de",
+      "adapter": "url_template.uc",
+      "supports_ipv6": true,
+      "supports_ttl": false,
+      "supports_proxied": false,
+      "url_v4": "https://www.goip.de/setip?username=[USERNAME]&password=[PASSWORD]&subdomain=[DOMAIN]&ip=[IP]",
+      "url_v6": "https://www.goip.de/setip?username=[USERNAME]&password=[PASSWORD]&subdomain=[DOMAIN]&ip6=[IP]",
+      "answer": "",
+      "fields": [
+        {
+          "key": "username",
+          "label": "Username / API Key",
+          "secret": false,
+          "required": true,
+          "placeholder": ""
+        },
+        {
+          "key": "password",
+          "label": "Password / Token",
+          "secret": true,
+          "required": true,
+          "placeholder": ""
+        }
+      ]
+    },
+    {
+      "id": "he.net",
+      "name": "he.net",
+      "adapter": "url_template.uc",
+      "supports_ipv6": true,
+      "supports_ttl": false,
+      "supports_proxied": false,
+      "url_v4": "https://dyn.dns.he.net/nic/update?hostname=[DOMAIN]&password=[PASSWORD]&myip=[IP]",
+      "url_v6": "https://dyn.dns.he.net/nic/update?hostname=[DOMAIN]&password=[PASSWORD]&myip=[IP]",
+      "answer": "good|nochg",
+      "fields": [
+        {
+          "key": "password",
+          "label": "Password / Token",
+          "secret": true,
+          "required": true,
+          "placeholder": ""
+        }
+      ]
+    },
+    {
+      "id": "hetzner.cloud",
+      "name": "hetzner.cloud",
+      "adapter": "url_template.uc",
+      "supports_ipv6": true,
+      "supports_ttl": false,
+      "supports_proxied": false,
+      "url_v4": "",
+      "url_v6": "",
+      "answer": "",
+      "fields": [
+        {
+          "key": "username",
+          "label": "Username / API Key",
+          "secret": false,
+          "required": true,
+          "placeholder": ""
+        },
+        {
+          "key": "password",
+          "label": "Password / Token",
+          "secret": true,
+          "required": true,
+          "placeholder": ""
+        }
+      ]
+    },
+    {
+      "id": "hosting.de",
+      "name": "hosting.de",
+      "adapter": "url_template.uc",
+      "supports_ipv6": true,
+      "supports_ttl": false,
+      "supports_proxied": false,
+      "url_v4": "https://[USERNAME]:[PASSWORD]@ddns.hosting.de/nic/update?hostname=[DOMAIN]&myip=[IP]",
+      "url_v6": "https://[USERNAME]:[PASSWORD]@ddns.hosting.de/nic/update?hostname=[DOMAIN]&myip=[IP]",
+      "answer": "good|nochg",
+      "fields": [
+        {
+          "key": "username",
+          "label": "Username / API Key",
+          "secret": false,
+          "required": true,
+          "placeholder": ""
+        },
+        {
+          "key": "password",
+          "label": "Password / Token",
+          "secret": true,
+          "required": true,
+          "placeholder": ""
+        }
+      ]
+    },
+    {
+      "id": "huaweicloud.com",
+      "name": "huaweicloud.com",
+      "adapter": "url_template.uc",
+      "supports_ipv6": true,
+      "supports_ttl": false,
+      "supports_proxied": false,
+      "url_v4": "",
+      "url_v6": "",
+      "answer": "",
+      "fields": [
+        {
+          "key": "username",
+          "label": "Username / API Key",
+          "secret": false,
+          "required": true,
+          "placeholder": ""
+        },
+        {
+          "key": "password",
+          "label": "Password / Token",
+          "secret": true,
+          "required": true,
+          "placeholder": ""
+        }
+      ]
+    },
+    {
+      "id": "infomaniak.com",
+      "name": "infomaniak.com",
+      "adapter": "url_template.uc",
+      "supports_ipv6": true,
+      "supports_ttl": false,
+      "supports_proxied": false,
+      "url_v4": "https://[USERNAME]:[PASSWORD]@infomaniak.com/nic/update?hostname=[DOMAIN]&myip=[IP]",
+      "url_v6": "https://[USERNAME]:[PASSWORD]@infomaniak.com/nic/update?hostname=[DOMAIN]&myip=[IP]",
+      "answer": "good|nochg",
+      "fields": [
+        {
+          "key": "username",
+          "label": "Username / API Key",
+          "secret": false,
+          "required": true,
+          "placeholder": ""
+        },
+        {
+          "key": "password",
+          "label": "Password / Token",
+          "secret": true,
+          "required": true,
+          "placeholder": ""
+        }
+      ]
+    },
+    {
+      "id": "inwx.de",
+      "name": "inwx.de",
+      "adapter": "url_template.uc",
+      "supports_ipv6": true,
+      "supports_ttl": false,
+      "supports_proxied": false,
+      "url_v4": "https://[USERNAME]:[PASSWORD]@dyndns.inwx.com/nic/update?myip=[IP]",
+      "url_v6": "https://[USERNAME]:[PASSWORD]@dyndns.inwx.com/nic/update?myipv6=[IP]",
+      "answer": "good|nochg",
+      "fields": [
+        {
+          "key": "username",
+          "label": "Username / API Key",
+          "secret": false,
+          "required": true,
+          "placeholder": ""
+        },
+        {
+          "key": "password",
+          "label": "Password / Token",
+          "secret": true,
+          "required": true,
+          "placeholder": ""
+        }
+      ]
+    },
+    {
+      "id": "ionos.com",
+      "name": "ionos.com",
+      "adapter": "url_template.uc",
+      "supports_ipv6": true,
+      "supports_ttl": false,
+      "supports_proxied": false,
+      "url_v4": "https://ipv4.api.hosting.ionos.com/dns/v1/dyndns?q=[PASSWORD]&ipv4=[IP]",
+      "url_v6": "https://ipv4.api.hosting.ionos.com/dns/v1/dyndns?q=[PASSWORD]&ipv6=[IP]",
+      "answer": "",
+      "fields": [
+        {
+          "key": "password",
+          "label": "Password / Token",
+          "secret": true,
+          "required": true,
+          "placeholder": ""
+        }
+      ]
+    },
+    {
+      "id": "ipnodns.ru",
+      "name": "ipnodns.ru",
+      "adapter": "url_template.uc",
+      "supports_ipv6": false,
+      "supports_ttl": false,
+      "supports_proxied": false,
+      "url_v4": "https://ipnodns.ru/cgi-bin/dyndns.cgi?login=[USERNAME]&secret=[PASSWORD]",
+      "url_v6": "",
+      "answer": "ok",
+      "fields": [
+        {
+          "key": "username",
+          "label": "Username / API Key",
+          "secret": false,
+          "required": true,
+          "placeholder": ""
+        },
+        {
+          "key": "password",
+          "label": "Password / Token",
+          "secret": true,
+          "required": true,
+          "placeholder": ""
+        }
+      ]
+    },
+    {
+      "id": "ipv64.net",
+      "name": "ipv64.net",
+      "adapter": "url_template.uc",
+      "supports_ipv6": true,
+      "supports_ttl": false,
+      "supports_proxied": false,
+      "url_v4": "https://ipv64.net/nic/update?domain=[DOMAIN]&key=[PASSWORD]&ip=[IP]",
+      "url_v6": "https://ipv64.net/nic/update?domain=[DOMAIN]&key=[PASSWORD]&ipv6=[IP]",
+      "answer": "good|nochg",
+      "fields": [
+        {
+          "key": "password",
+          "label": "Password / Token",
+          "secret": true,
+          "required": true,
+          "placeholder": ""
+        }
+      ]
+    },
+    {
+      "id": "joker.com",
+      "name": "joker.com",
+      "adapter": "url_template.uc",
+      "supports_ipv6": true,
+      "supports_ttl": false,
+      "supports_proxied": false,
+      "url_v4": "https://svc.joker.com/nic/update?username=[USERNAME]&password=[PASSWORD]&myip=[IP]&hostname=[DOMAIN]",
+      "url_v6": "https://svc.joker.com/nic/update?username=[USERNAME]&password=[PASSWORD]&myip=[IP]&hostname=[DOMAIN]",
+      "answer": "good|nochg",
+      "fields": [
+        {
+          "key": "username",
+          "label": "Username / API Key",
+          "secret": false,
+          "required": true,
+          "placeholder": ""
+        },
+        {
+          "key": "password",
+          "label": "Password / Token",
+          "secret": true,
+          "required": true,
+          "placeholder": ""
+        }
+      ]
+    },
+    {
+      "id": "loopia.se",
+      "name": "loopia.se",
+      "adapter": "url_template.uc",
+      "supports_ipv6": true,
+      "supports_ttl": false,
+      "supports_proxied": false,
+      "url_v4": "https://[USERNAME]:[PASSWORD]@dns.loopia.se/XDynDNSServer/XDynDNS.php?system=custom&hostname=[DOMAIN]&myip=[IP]",
+      "url_v6": "https://[USERNAME]:[PASSWORD]@dns.loopia.se/XDynDNSServer/XDynDNS.php?system=custom&hostname=[DOMAIN]&myip=[IP]",
+      "answer": "good|nochg",
+      "fields": [
+        {
+          "key": "username",
+          "label": "Username / API Key",
+          "secret": false,
+          "required": true,
+          "placeholder": ""
+        },
+        {
+          "key": "password",
+          "label": "Password / Token",
+          "secret": true,
+          "required": true,
+          "placeholder": ""
+        }
+      ]
+    },
+    {
+      "id": "luadns.com-v1",
+      "name": "luadns.com-v1",
+      "adapter": "url_template.uc",
+      "supports_ipv6": true,
+      "supports_ttl": false,
+      "supports_proxied": false,
+      "url_v4": "",
+      "url_v6": "",
+      "answer": "",
+      "fields": [
+        {
+          "key": "username",
+          "label": "Username / API Key",
+          "secret": false,
+          "required": true,
+          "placeholder": ""
+        },
+        {
+          "key": "password",
+          "label": "Password / Token",
+          "secret": true,
+          "required": true,
+          "placeholder": ""
+        }
+      ]
+    },
+    {
+      "id": "moniker.com",
+      "name": "moniker.com",
+      "adapter": "url_template.uc",
+      "supports_ipv6": false,
+      "supports_ttl": false,
+      "supports_proxied": false,
+      "url_v4": "https://dynamicdns.key-systems.net/update.php?hostname=[DOMAIN]&password=[PASSWORD]&ip=[IP]",
+      "url_v6": "",
+      "answer": "success",
+      "fields": [
+        {
+          "key": "password",
+          "label": "Password / Token",
+          "secret": true,
+          "required": true,
+          "placeholder": ""
+        }
+      ]
+    },
+    {
+      "id": "mydns.jp",
+      "name": "mydns.jp",
+      "adapter": "url_template.uc",
+      "supports_ipv6": true,
+      "supports_ttl": false,
+      "supports_proxied": false,
+      "url_v4": "https://www.mydns.jp/directip.html?MID=[USERNAME]&PWD=[PASSWORD]&IPV4ADDR=[IP]",
+      "url_v6": "https://www.mydns.jp/directip.html?MID=[USERNAME]&PWD=[PASSWORD]&IPV6ADDR=[IP]",
+      "answer": "",
+      "fields": [
+        {
+          "key": "username",
+          "label": "Username / API Key",
+          "secret": false,
+          "required": true,
+          "placeholder": ""
+        },
+        {
+          "key": "password",
+          "label": "Password / Token",
+          "secret": true,
+          "required": true,
+          "placeholder": ""
+        }
+      ]
+    },
+    {
+      "id": "myonlineportal.net",
+      "name": "myonlineportal.net",
+      "adapter": "url_template.uc",
+      "supports_ipv6": true,
+      "supports_ttl": false,
+      "supports_proxied": false,
+      "url_v4": "https://myonlineportal.net/updateddns?hostname=[DOMAIN]&ip=[IP]&username=[USERNAME]&password=[PASSWORD]",
+      "url_v6": "https://myonlineportal.net/updateddns?hostname=[DOMAIN]&ip6=[IP]&username=[USERNAME]&password=[PASSWORD]",
+      "answer": "good|nochg",
+      "fields": [
+        {
+          "key": "username",
+          "label": "Username / API Key",
+          "secret": false,
+          "required": true,
+          "placeholder": ""
+        },
+        {
+          "key": "password",
+          "label": "Password / Token",
+          "secret": true,
+          "required": true,
+          "placeholder": ""
+        }
+      ]
+    },
+    {
+      "id": "mythic-beasts.com",
+      "name": "mythic-beasts.com",
+      "adapter": "url_template.uc",
+      "supports_ipv6": true,
+      "supports_ttl": false,
+      "supports_proxied": false,
+      "url_v4": "https://dnsapi4.mythic-beasts.com/?domain=[USERNAME]&password=[PASSWORD]&command=REPLACE%20[DOMAIN]%2060%20A%20DYNAMIC_IP&origin=.",
+      "url_v6": "https://dnsapi6.mythic-beasts.com/?domain=[USERNAME]&password=[PASSWORD]&command=REPLACE%20[DOMAIN]%2060%20AAAA%20DYNAMIC_IP&origin=.",
+      "answer": "",
+      "fields": [
+        {
+          "key": "username",
+          "label": "Username / API Key",
+          "secret": false,
+          "required": true,
+          "placeholder": ""
+        },
+        {
+          "key": "password",
+          "label": "Password / Token",
+          "secret": true,
+          "required": true,
+          "placeholder": ""
+        }
+      ]
+    },
+    {
+      "id": "mythic-beasts.com-v2",
+      "name": "mythic-beasts.com-v2",
+      "adapter": "url_template.uc",
+      "supports_ipv6": true,
+      "supports_ttl": false,
+      "supports_proxied": false,
+      "url_v4": "https://[USERNAME]:[PASSWORD]@ipv4.api.mythic-beasts.com/dns/v2/dynamic/[DOMAIN]",
+      "url_v6": "https://[USERNAME]:[PASSWORD]@ipv6.api.mythic-beasts.com/dns/v2/dynamic/[DOMAIN]",
+      "answer": "",
+      "fields": [
+        {
+          "key": "username",
+          "label": "Username / API Key",
+          "secret": false,
+          "required": true,
+          "placeholder": ""
+        },
+        {
+          "key": "password",
+          "label": "Password / Token",
+          "secret": true,
+          "required": true,
+          "placeholder": ""
+        }
+      ]
+    },
+    {
+      "id": "namecheap.com",
+      "name": "Namecheap (namecheap.com)",
+      "adapter": "url_template.uc",
+      "supports_ipv6": false,
+      "supports_ttl": false,
+      "supports_proxied": false,
+      "url_v4": "https://dynamicdns.park-your-domain.com/update?host=[HOST]&domain=[ZONE]&password=[PASSWORD]&ip=[IP]",
+      "url_v6": "",
+      "answer": "<ErrCount>0</ErrCount>",
+      "fields": [
+        {
+          "key": "password",
+          "label": "Dynamic DNS Password",
+          "secret": true,
+          "required": true,
+          "placeholder": "Namecheap Dynamic DNS Password"
+        }
+      ]
+    },
+    {
+      "id": "namesilo.com-v1",
+      "name": "namesilo.com-v1",
+      "adapter": "url_template.uc",
+      "supports_ipv6": true,
+      "supports_ttl": false,
+      "supports_proxied": false,
+      "url_v4": "",
+      "url_v6": "",
+      "answer": "",
+      "fields": [
+        {
+          "key": "username",
+          "label": "Username / API Key",
+          "secret": false,
+          "required": true,
+          "placeholder": ""
+        },
+        {
+          "key": "password",
+          "label": "Password / Token",
+          "secret": true,
+          "required": true,
+          "placeholder": ""
+        }
+      ]
+    },
+    {
+      "id": "netcup.com",
+      "name": "netcup.com",
+      "adapter": "url_template.uc",
+      "supports_ipv6": true,
+      "supports_ttl": false,
+      "supports_proxied": false,
+      "url_v4": "",
+      "url_v6": "",
+      "answer": "",
+      "fields": [
+        {
+          "key": "username",
+          "label": "Username / API Key",
+          "secret": false,
+          "required": true,
+          "placeholder": ""
+        },
+        {
+          "key": "password",
+          "label": "Password / Token",
+          "secret": true,
+          "required": true,
+          "placeholder": ""
+        }
+      ]
+    },
+    {
+      "id": "netcup.com-v2",
+      "name": "netcup.com-v2",
+      "adapter": "url_template.uc",
+      "supports_ipv6": true,
+      "supports_ttl": false,
+      "supports_proxied": false,
+      "url_v4": "https://customercontrolpanel.de/wsDynDns.php?action=update&token=[PASSWORD]&fqdn=[DOMAIN]&ipv4Address=[IP]",
+      "url_v6": "https://customercontrolpanel.de/wsDynDns.php?action=update&token=[PASSWORD]&fqdn=[DOMAIN]&ipv6Address=[IP]",
+      "answer": "",
+      "fields": [
+        {
+          "key": "password",
+          "label": "Password / Token",
+          "secret": true,
+          "required": true,
+          "placeholder": ""
+        }
+      ]
+    },
+    {
+      "id": "njal.la",
+      "name": "njal.la",
+      "adapter": "url_template.uc",
+      "supports_ipv6": true,
+      "supports_ttl": false,
+      "supports_proxied": false,
+      "url_v4": "https://njal.la/update/?h=[DOMAIN]&k=[PASSWORD]&a=[IP]",
+      "url_v6": "https://njal.la/update/?h=[DOMAIN]&k=[PASSWORD]&aaaa=[IP]",
+      "answer": "",
+      "fields": [
+        {
+          "key": "password",
+          "label": "Password / Token",
+          "secret": true,
+          "required": true,
+          "placeholder": ""
+        }
+      ]
+    },
+    {
+      "id": "no-ip.pl",
+      "name": "no-ip.pl",
+      "adapter": "url_template.uc",
+      "supports_ipv6": true,
+      "supports_ttl": false,
+      "supports_proxied": false,
+      "url_v4": "https://[USERNAME]:[PASSWORD]@update.no-ip.pl/?hostname=[DOMAIN]",
+      "url_v6": "https://[USERNAME]:[PASSWORD]@update.no-ip.pl/?hostname=[DOMAIN]",
+      "answer": "",
+      "fields": [
+        {
+          "key": "username",
+          "label": "Username / API Key",
+          "secret": false,
+          "required": true,
+          "placeholder": ""
+        },
+        {
+          "key": "password",
+          "label": "Password / Token",
+          "secret": true,
+          "required": true,
+          "placeholder": ""
+        }
+      ]
+    },
+    {
+      "id": "now-dns.com",
+      "name": "now-dns.com",
+      "adapter": "url_template.uc",
+      "supports_ipv6": true,
+      "supports_ttl": false,
+      "supports_proxied": false,
+      "url_v4": "https://[USERNAME]:[PASSWORD]@now-dns.com/update?hostname=[DOMAIN]",
+      "url_v6": "https://[USERNAME]:[PASSWORD]@now-dns.com/update?hostname=[DOMAIN]",
+      "answer": "good|nochg",
+      "fields": [
+        {
+          "key": "username",
+          "label": "Username / API Key",
+          "secret": false,
+          "required": true,
+          "placeholder": ""
+        },
+        {
+          "key": "password",
+          "label": "Password / Token",
+          "secret": true,
+          "required": true,
+          "placeholder": ""
+        }
+      ]
+    },
+    {
+      "id": "ns1.com",
+      "name": "ns1.com",
+      "adapter": "url_template.uc",
+      "supports_ipv6": true,
+      "supports_ttl": false,
+      "supports_proxied": false,
+      "url_v4": "",
+      "url_v6": "",
+      "answer": "",
+      "fields": [
+        {
+          "key": "username",
+          "label": "Username / API Key",
+          "secret": false,
+          "required": true,
+          "placeholder": ""
+        },
+        {
+          "key": "password",
+          "label": "Password / Token",
+          "secret": true,
+          "required": true,
+          "placeholder": ""
+        }
+      ]
+    },
+    {
+      "id": "nsupdate.info",
+      "name": "nsupdate.info",
+      "adapter": "url_template.uc",
+      "supports_ipv6": true,
+      "supports_ttl": false,
+      "supports_proxied": false,
+      "url_v4": "https://[USERNAME]:[PASSWORD]@ipv4.nsupdate.info/nic/update?hostname=[DOMAIN]&myip=[IP]",
+      "url_v6": "https://[USERNAME]:[PASSWORD]@ipv6.nsupdate.info/nic/update?hostname=[DOMAIN]&myip=[IP]",
+      "answer": "good|nochg",
+      "fields": [
+        {
+          "key": "username",
+          "label": "Username / API Key",
+          "secret": false,
+          "required": true,
+          "placeholder": ""
+        },
+        {
+          "key": "password",
+          "label": "Password / Token",
+          "secret": true,
+          "required": true,
+          "placeholder": ""
+        }
+      ]
+    },
+    {
+      "id": "one.com",
+      "name": "one.com",
+      "adapter": "url_template.uc",
+      "supports_ipv6": false,
+      "supports_ttl": false,
+      "supports_proxied": false,
+      "url_v4": "",
+      "url_v6": "",
+      "answer": "",
+      "fields": [
+        {
+          "key": "username",
+          "label": "Username / API Key",
+          "secret": false,
+          "required": true,
+          "placeholder": ""
+        },
+        {
+          "key": "password",
+          "label": "Password / Token",
+          "secret": true,
+          "required": true,
+          "placeholder": ""
+        }
+      ]
+    },
+    {
+      "id": "opendns.com",
+      "name": "opendns.com",
+      "adapter": "url_template.uc",
+      "supports_ipv6": false,
+      "supports_ttl": false,
+      "supports_proxied": false,
+      "url_v4": "https://[USERNAME]:[PASSWORD]@updates.opendns.com/nic/update?hostname=[DOMAIN]&myip=[IP]",
+      "url_v6": "",
+      "answer": "good|nochg",
+      "fields": [
+        {
+          "key": "username",
+          "label": "Username / API Key",
+          "secret": false,
+          "required": true,
+          "placeholder": ""
+        },
+        {
+          "key": "password",
+          "label": "Password / Token",
+          "secret": true,
+          "required": true,
+          "placeholder": ""
+        }
+      ]
+    },
+    {
+      "id": "ovh.com",
+      "name": "ovh.com",
+      "adapter": "url_template.uc",
+      "supports_ipv6": true,
+      "supports_ttl": false,
+      "supports_proxied": false,
+      "url_v4": "https://[USERNAME]:[PASSWORD]@dns.eu.ovhapis.com/nic/update?system=dyndns&hostname=[DOMAIN]&myip=[IP]",
+      "url_v6": "https://[USERNAME]:[PASSWORD]@dns.eu.ovhapis.com/nic/update?system=dyndns&hostname=[DOMAIN]&myip=[IP]",
+      "answer": "good|nochg",
+      "fields": [
+        {
+          "key": "username",
+          "label": "Username / API Key",
+          "secret": false,
+          "required": true,
+          "placeholder": ""
+        },
+        {
+          "key": "password",
+          "label": "Password / Token",
+          "secret": true,
+          "required": true,
+          "placeholder": ""
+        }
+      ]
+    },
+    {
+      "id": "pdns",
+      "name": "pdns",
+      "adapter": "url_template.uc",
+      "supports_ipv6": true,
+      "supports_ttl": false,
+      "supports_proxied": false,
+      "url_v4": "",
+      "url_v6": "",
+      "answer": "",
+      "fields": [
+        {
+          "key": "username",
+          "label": "Username / API Key",
+          "secret": false,
+          "required": true,
+          "placeholder": ""
+        },
+        {
+          "key": "password",
+          "label": "Password / Token",
+          "secret": true,
+          "required": true,
+          "placeholder": ""
+        }
+      ]
+    },
+    {
+      "id": "regfish.de",
+      "name": "regfish.de",
+      "adapter": "url_template.uc",
+      "supports_ipv6": true,
+      "supports_ttl": false,
+      "supports_proxied": false,
+      "url_v4": "https://dyndns.regfish.de/?fqdn=[DOMAIN]&forcehost=1&authtype=secure&token=[PASSWORD]&ipv4=[IP]",
+      "url_v6": "https://dyndns.regfish.de/?fqdn=[DOMAIN]&forcehost=1&authtype=secure&token=[PASSWORD]&ipv6=[IP]",
+      "answer": "success|100|101",
+      "fields": [
+        {
+          "key": "password",
+          "label": "Password / Token",
+          "secret": true,
+          "required": true,
+          "placeholder": ""
+        }
+      ]
+    },
+    {
+      "id": "route53-v1",
+      "name": "route53-v1",
+      "adapter": "url_template.uc",
+      "supports_ipv6": true,
+      "supports_ttl": false,
+      "supports_proxied": false,
+      "url_v4": "",
+      "url_v6": "",
+      "answer": "",
+      "fields": [
+        {
+          "key": "username",
+          "label": "Username / API Key",
+          "secret": false,
+          "required": true,
+          "placeholder": ""
+        },
+        {
+          "key": "password",
+          "label": "Password / Token",
+          "secret": true,
+          "required": true,
+          "placeholder": ""
+        }
+      ]
+    },
+    {
+      "id": "scaleway.com",
+      "name": "scaleway.com",
+      "adapter": "url_template.uc",
+      "supports_ipv6": true,
+      "supports_ttl": false,
+      "supports_proxied": false,
+      "url_v4": "",
+      "url_v6": "",
+      "answer": "",
+      "fields": [
+        {
+          "key": "username",
+          "label": "Username / API Key",
+          "secret": false,
+          "required": true,
+          "placeholder": ""
+        },
+        {
+          "key": "password",
+          "label": "Password / Token",
+          "secret": true,
+          "required": true,
+          "placeholder": ""
+        }
+      ]
+    },
+    {
+      "id": "schokokeks.org",
+      "name": "schokokeks.org",
+      "adapter": "url_template.uc",
+      "supports_ipv6": false,
+      "supports_ttl": false,
+      "supports_proxied": false,
+      "url_v4": "https://[USERNAME]:[PASSWORD]@dyndns.schokokeks.org/nic/update?myip=[IP]",
+      "url_v6": "",
+      "answer": "good|nochg",
+      "fields": [
+        {
+          "key": "username",
+          "label": "Username / API Key",
+          "secret": false,
+          "required": true,
+          "placeholder": ""
+        },
+        {
+          "key": "password",
+          "label": "Password / Token",
+          "secret": true,
+          "required": true,
+          "placeholder": ""
+        }
+      ]
+    },
+    {
+      "id": "selfhost.de",
+      "name": "selfhost.de",
+      "adapter": "url_template.uc",
+      "supports_ipv6": false,
+      "supports_ttl": false,
+      "supports_proxied": false,
+      "url_v4": "https://carol.selfhost.de/update?username=[USERNAME]&password=[PASSWORD]&myip=[IP]&hostname=1",
+      "url_v6": "",
+      "answer": "good|nochg|200|204",
+      "fields": [
+        {
+          "key": "username",
+          "label": "Username / API Key",
+          "secret": false,
+          "required": true,
+          "placeholder": ""
+        },
+        {
+          "key": "password",
+          "label": "Password / Token",
+          "secret": true,
+          "required": true,
+          "placeholder": ""
+        }
+      ]
+    },
+    {
+      "id": "servercow.de",
+      "name": "servercow.de",
+      "adapter": "url_template.uc",
+      "supports_ipv6": true,
+      "supports_ttl": false,
+      "supports_proxied": false,
+      "url_v4": "",
+      "url_v6": "",
+      "answer": "",
+      "fields": [
+        {
+          "key": "username",
+          "label": "Username / API Key",
+          "secret": false,
+          "required": true,
+          "placeholder": ""
+        },
+        {
+          "key": "password",
+          "label": "Password / Token",
+          "secret": true,
+          "required": true,
+          "placeholder": ""
+        }
+      ]
+    },
+    {
+      "id": "simply.com",
+      "name": "simply.com",
+      "adapter": "url_template.uc",
+      "supports_ipv6": true,
+      "supports_ttl": false,
+      "supports_proxied": false,
+      "url_v4": "https://[USERNAME]:[PASSWORD]@ddns.simply.com/nic/update?hostname=[DOMAIN]&myip=[IP]",
+      "url_v6": "https://[USERNAME]:[PASSWORD]@ddns.simply.com/nic/update?hostname=[DOMAIN]&myip=[IP]",
+      "answer": "good|nochg",
+      "fields": [
+        {
+          "key": "username",
+          "label": "Username / API Key",
+          "secret": false,
+          "required": true,
+          "placeholder": ""
+        },
+        {
+          "key": "password",
+          "label": "Password / Token",
+          "secret": true,
+          "required": true,
+          "placeholder": ""
+        }
+      ]
+    },
+    {
+      "id": "sitelutions.com",
+      "name": "sitelutions.com",
+      "adapter": "url_template.uc",
+      "supports_ipv6": false,
+      "supports_ttl": false,
+      "supports_proxied": false,
+      "url_v4": "https://dnsup.sitelutions.com/dnsup?user=[USERNAME]&pass=[PASSWORD]&id=[DOMAIN]&ip=[IP]",
+      "url_v6": "",
+      "answer": "success",
+      "fields": [
+        {
+          "key": "username",
+          "label": "Username / API Key",
+          "secret": false,
+          "required": true,
+          "placeholder": ""
+        },
+        {
+          "key": "password",
+          "label": "Password / Token",
+          "secret": true,
+          "required": true,
+          "placeholder": ""
+        }
+      ]
+    },
+    {
+      "id": "spdyn.de",
+      "name": "spdyn.de",
+      "adapter": "url_template.uc",
+      "supports_ipv6": true,
+      "supports_ttl": false,
+      "supports_proxied": false,
+      "url_v4": "https://update.spdyn.de/nic/update?hostname=[DOMAIN]&myip=[IP]&user=[USERNAME]&pass=[PASSWORD]",
+      "url_v6": "https://update.spdyn.de/nic/update?hostname=[DOMAIN]&myip=[IP]&user=[USERNAME]&pass=[PASSWORD]",
+      "answer": "good|nochg",
+      "fields": [
+        {
+          "key": "username",
+          "label": "Username / API Key",
+          "secret": false,
+          "required": true,
+          "placeholder": ""
+        },
+        {
+          "key": "password",
+          "label": "Password / Token",
+          "secret": true,
+          "required": true,
+          "placeholder": ""
+        }
+      ]
+    },
+    {
+      "id": "strato.com",
+      "name": "strato.com",
+      "adapter": "url_template.uc",
+      "supports_ipv6": true,
+      "supports_ttl": false,
+      "supports_proxied": false,
+      "url_v4": "https://[USERNAME]:[PASSWORD]@dyndns.strato.com/nic/update?hostname=[DOMAIN]&myip=[IP]",
+      "url_v6": "https://[USERNAME]:[PASSWORD]@dyndns.strato.com/nic/update?hostname=[DOMAIN]&myip=[IP]",
+      "answer": "good|nochg",
+      "fields": [
+        {
+          "key": "username",
+          "label": "Username / API Key",
+          "secret": false,
+          "required": true,
+          "placeholder": ""
+        },
+        {
+          "key": "password",
+          "label": "Password / Token",
+          "secret": true,
+          "required": true,
+          "placeholder": ""
+        }
+      ]
+    },
+    {
+      "id": "transip.nl",
+      "name": "transip.nl",
+      "adapter": "url_template.uc",
+      "supports_ipv6": true,
+      "supports_ttl": false,
+      "supports_proxied": false,
+      "url_v4": "",
+      "url_v6": "",
+      "answer": "",
+      "fields": [
+        {
+          "key": "username",
+          "label": "Username / API Key",
+          "secret": false,
+          "required": true,
+          "placeholder": ""
+        },
+        {
+          "key": "password",
+          "label": "Password / Token",
+          "secret": true,
+          "required": true,
+          "placeholder": ""
+        }
+      ]
+    },
+    {
+      "id": "udmedia.de",
+      "name": "udmedia.de",
+      "adapter": "url_template.uc",
+      "supports_ipv6": true,
+      "supports_ttl": false,
+      "supports_proxied": false,
+      "url_v4": "https://[USERNAME]:[PASSWORD]@www.udmedia.de/nic/update?myip=[IP]",
+      "url_v6": "https://[USERNAME]:[PASSWORD]@www.udmedia.de/nic/update?myip=[IP]",
+      "answer": "",
+      "fields": [
+        {
+          "key": "username",
+          "label": "Username / API Key",
+          "secret": false,
+          "required": true,
+          "placeholder": ""
+        },
+        {
+          "key": "password",
+          "label": "Password / Token",
+          "secret": true,
+          "required": true,
+          "placeholder": ""
+        }
+      ]
+    },
+    {
+      "id": "variomedia.de",
+      "name": "variomedia.de",
+      "adapter": "url_template.uc",
+      "supports_ipv6": true,
+      "supports_ttl": false,
+      "supports_proxied": false,
+      "url_v4": "https://[USERNAME]:[PASSWORD]@dyndns.variomedia.de/nic/update?hostname=[DOMAIN]&myip=[IP]",
+      "url_v6": "https://[USERNAME]:[PASSWORD]@dyndns.variomedia.de/nic/update?hostname=[DOMAIN]&myip=[IP]",
+      "answer": "good|nochg",
+      "fields": [
+        {
+          "key": "username",
+          "label": "Username / API Key",
+          "secret": false,
+          "required": true,
+          "placeholder": ""
+        },
+        {
+          "key": "password",
+          "label": "Password / Token",
+          "secret": true,
+          "required": true,
+          "placeholder": ""
+        }
+      ]
+    },
+    {
+      "id": "ydns.io",
+      "name": "ydns.io",
+      "adapter": "url_template.uc",
+      "supports_ipv6": true,
+      "supports_ttl": false,
+      "supports_proxied": false,
+      "url_v4": "https://[USERNAME]:[PASSWORD]@ydns.io/api/v1/update/?host=[DOMAIN]&ip=[IP]",
+      "url_v6": "https://[USERNAME]:[PASSWORD]@ydns.io/api/v1/update/?host=[DOMAIN]&ip=[IP]",
+      "answer": "good|nochg",
+      "fields": [
+        {
+          "key": "username",
+          "label": "Username / API Key",
+          "secret": false,
+          "required": true,
+          "placeholder": ""
+        },
+        {
+          "key": "password",
+          "label": "Password / Token",
+          "secret": true,
+          "required": true,
+          "placeholder": ""
+        }
+      ]
+    },
+    {
+      "id": "zoneedit.com",
+      "name": "zoneedit.com",
+      "adapter": "url_template.uc",
+      "supports_ipv6": false,
+      "supports_ttl": false,
+      "supports_proxied": false,
+      "url_v4": "https://[USERNAME]:[PASSWORD]@dynamic.zoneedit.com/auth/dynamic.html?host=[DOMAIN]&dnsto=[IP]",
+      "url_v6": "",
+      "answer": "",
+      "fields": [
+        {
+          "key": "username",
+          "label": "Username / API Key",
+          "secret": false,
+          "required": true,
+          "placeholder": ""
+        },
+        {
+          "key": "password",
+          "label": "Password / Token",
+          "secret": true,
+          "required": true,
+          "placeholder": ""
+        }
+      ]
+    },
+    {
+      "id": "custom_webhook",
+      "name": "Custom Webhook / URL Template",
+      "adapter": "url_template.uc",
+      "supports_ipv6": true,
+      "supports_ttl": false,
+      "supports_proxied": false,
+      "fields": [
+        {
+          "key": "custom_url",
+          "label": "Update URL Template",
+          "secret": false,
+          "required": true,
+          "placeholder": "https://api.example.com/update?host=[DOMAIN]&ip=[IP]"
+        },
+        {
+          "key": "username",
+          "label": "Username (optional)",
+          "secret": false,
+          "required": false,
+          "placeholder": ""
+        },
+        {
+          "key": "password",
+          "label": "Password / Token (optional)",
+          "secret": true,
+          "required": false,
+          "placeholder": ""
+        }
+      ]
+    }
+  ]
+}

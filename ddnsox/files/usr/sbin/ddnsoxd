@@ -1,0 +1,473 @@
+#!/usr/bin/env ucode
+'use strict';
+
+import * as fs from 'fs';
+import * as ubus from 'ubus';
+import * as uloop from 'uloop';
+import { cursor } from 'uci';
+
+import * as state from '/usr/share/ddnsox/lib/state.uc';
+import * as probe from '/usr/share/ddnsox/lib/probe.uc';
+import * as dns from '/usr/share/ddnsox/lib/dns.uc';
+import * as http from '/usr/share/ddnsox/lib/http.uc';
+
+import * as mod_cloudflare_v4 from '/usr/share/ddnsox/providers/cloudflare_v4.uc';
+import * as mod_aliyun from '/usr/share/ddnsox/providers/aliyun.uc';
+import * as mod_dnspod from '/usr/share/ddnsox/providers/dnspod.uc';
+import * as mod_porkbun_v3 from '/usr/share/ddnsox/providers/porkbun_v3.uc';
+import * as mod_dyndns2 from '/usr/share/ddnsox/providers/dyndns2.uc';
+import * as mod_url_template from '/usr/share/ddnsox/providers/url_template.uc';
+import * as mod_custom_webhook from '/usr/share/ddnsox/providers/custom_webhook.uc';
+
+const ADAPTERS = {
+	'cloudflare_v4.uc': mod_cloudflare_v4,
+	'aliyun.uc': mod_aliyun,
+	'dnspod.uc': mod_dnspod,
+	'porkbun_v3.uc': mod_porkbun_v3,
+	'dyndns2.uc': mod_dyndns2,
+	'url_template.uc': mod_url_template,
+	'custom_webhook.uc': mod_custom_webhook
+};
+
+const REGISTRY_PATH = '/usr/share/ddnsox/providers/registry.json';
+
+let conn = null;
+let global_cfg = {};
+let rules_cfg = {};
+let rule_order = [];
+let providers_meta = {};
+let adapter_cache = {};
+let rule_timers = {};
+let debounce_timer = null;
+let periodic_timer = null;
+
+function load_registry() {
+	let raw = fs.readfile(REGISTRY_PATH);
+	if (!raw) return;
+	try {
+		let parsed = json(raw);
+		providers_meta = {};
+		for (let p in (parsed?.providers || []))
+			providers_meta[p.id] = p;
+	} catch (e) {
+		state.log('error', 'daemon', 'Failed to parse provider registry: ' + e);
+	}
+}
+
+function get_adapter(provider_id) {
+	let meta = providers_meta[provider_id];
+	if (!meta || !meta.adapter)
+		return null;
+	return ADAPTERS[meta.adapter] || null;
+}
+
+function normalize_domain(raw) {
+	let s = lc(trim(raw || ''));
+	s = replace(s, /^@+\./, '');
+	s = replace(s, '@', '.');
+	return replace(s, /^\.+|\.+$/g, '');
+}
+
+function load_config() {
+	let u = cursor();
+	u.load('ddnsox');
+	let g = u.get_all('ddnsox', 'global') || {};
+	global_cfg = {
+		enabled: (g.enabled != '0'),
+		use_authoritative_ns: (g.use_authoritative_ns != '0'),
+		check_interval: int(g.check_interval || 1800),
+		log_lines: int(g.log_lines || 300),
+		log_level: g.log_level || 'info',
+		doh_servers: type(g.doh_servers) == 'array' ? g.doh_servers : (g.doh_servers ? [g.doh_servers] : ['https://223.5.5.5/dns-query', 'https://1.1.1.1/dns-query']),
+		public_ip_urls_v4: type(g.public_ip_urls_v4) == 'array' ? g.public_ip_urls_v4 : ['https://4.ipw.cn', 'https://api4.ipify.org'],
+		public_ip_urls_v6: type(g.public_ip_urls_v6) == 'array' ? g.public_ip_urls_v6 : ['https://6.ipw.cn', 'https://api6.ipify.org']
+	};
+	if (global_cfg.check_interval < 60)
+		global_cfg.check_interval = 60;
+
+	state.configure(global_cfg);
+
+	rules_cfg = {};
+	rule_order = [];
+	u.foreach('ddnsox', 'rule', (sec) => {
+		let id = sec['.name'];
+		let p_id = sec.provider || 'dyndns2';
+		let r = {
+			id: id,
+			enabled: (sec.enabled != '0'),
+			provider: p_id,
+			provider_name: providers_meta[p_id]?.name || p_id,
+			domain: normalize_domain(sec.domain),
+			ip_mode: sec.ip_mode || 'dual',
+			username: sec.username || '',
+			password: sec.password || '',
+			param_opt: sec.param_opt || '',
+			interface: sec.interface || 'auto',
+			ip_source: sec.ip_source || 'auto',
+			allow_private_ip: (sec.allow_private_ip == '1'),
+			ttl: int(sec.ttl || 600),
+			proxied: (sec.proxied == '1'),
+			custom_url: sec.custom_url || '',
+			proxy: sec.proxy || '',
+			dns_server: sec.dns_server || '',
+			force_interval: int(sec.force_interval || 259200)
+		};
+		rules_cfg[id] = r;
+		push(rule_order, id);
+		state.init_rule(r);
+	});
+	state.prune_rules(rule_order);
+}
+
+function refresh_wan_snapshot() {
+	let v4 = probe.probe_address(conn, {
+		family: 4,
+		interface: 'auto',
+		ip_source: 'auto',
+		public_urls: global_cfg.public_ip_urls_v4
+	});
+	let v6 = probe.probe_address(conn, {
+		family: 6,
+		interface: 'auto',
+		ip_source: 'auto',
+		public_urls: global_cfg.public_ip_urls_v6
+	});
+	state.set_wan_snapshot(
+		{ interface: v4.interface, ip: v4.ip, cgnat: v4.cgnat, source: v4.source },
+		{ interface: v6.interface, ip: v6.ip, ula: v6.ula, source: v6.source }
+	);
+}
+
+function schedule_rule(id, delay_sec) {
+	if (rule_timers[id]) {
+		rule_timers[id].cancel();
+		delete rule_timers[id];
+	}
+	let ms = (delay_sec > 0 ? delay_sec : 1) * 1000;
+	state.set_rule_state(id, { next_check: time() + delay_sec });
+	rule_timers[id] = uloop.timer(ms, () => {
+		delete rule_timers[id];
+		process_rule(id, false);
+	});
+}
+
+function process_family(rule, family, force) {
+	let urls = (family == 6) ? global_cfg.public_ip_urls_v6 : global_cfg.public_ip_urls_v4;
+	let p_res = probe.probe_address(conn, {
+		family: family,
+		interface: rule.interface,
+		ip_source: rule.ip_source,
+		allow_private_ip: rule.allow_private_ip,
+		public_urls: urls
+	});
+
+	if (!p_res.ok || !p_res.ip) {
+		return {
+			ok: false,
+			fatal: false,
+			code: 'probe_failed',
+			message: p_res.error,
+			info: { probed_ip: null, dns_ip: null, dns_source: null, in_sync: false }
+		};
+	}
+
+	let d_res = dns.lookup_clean(rule.domain, family, {
+		doh_servers: global_cfg.doh_servers,
+		use_authoritative_ns: global_cfg.use_authoritative_ns,
+		custom_dns_server: rule.dns_server
+	});
+
+	let dns_ip = d_res.ips?.[0] || null;
+	let matched = d_res.ok && dns.ip_matches(p_res.ip, d_res.ips);
+	let cur_state = state.get_rule(rule.id);
+	let force_expired = cur_state && cur_state.last_update > 0 && rule.force_interval > 0 && (time() - cur_state.last_update >= rule.force_interval);
+
+	if (matched && !force && !force_expired) {
+		return {
+			ok: true,
+			updated: false,
+			info: {
+				probed_ip: p_res.ip,
+				dns_ip: p_res.ip,
+				dns_source: d_res.source,
+				in_sync: true
+			}
+		};
+	}
+
+	let adapter = get_adapter(rule.provider);
+	if (!adapter) {
+		return {
+			ok: false,
+			fatal: true,
+			code: 'missing_adapter',
+			message: 'Provider adapter not found: ' + rule.provider,
+			info: { probed_ip: p_res.ip, dns_ip: dns_ip, dns_source: d_res.source, in_sync: false }
+		};
+	}
+
+	state.set_rule_state(rule.id, { state: 'updating' });
+	let rrtype = (family == 6) ? 'AAAA' : 'A';
+	state.log('info', rule.id, sprintf('Updating %s (%s) -> %s via %s', rule.domain, rrtype, p_res.ip, rule.provider));
+
+	let meta = providers_meta[rule.provider] || {};
+	let scoped_http = (rule.proxy && length(trim(rule.proxy)) > 0) ? {
+		url_encode: http.url_encode,
+		request: (o) => {
+			let opts = { proxy: rule.proxy };
+			for (let k, v in (o || {})) opts[k] = v;
+			return http.request(opts);
+		},
+		get: (u, h, t, b) => http.get(u, h, t, b, rule.proxy),
+		json_request: (o) => {
+			let opts = { proxy: rule.proxy };
+			for (let k, v in (o || {})) opts[k] = v;
+			return http.json_request(opts);
+		}
+	} : http;
+
+	let u_res = adapter.update({
+		domain: rule.domain,
+		rrtype: rrtype,
+		ip: p_res.ip,
+		ttl: rule.ttl,
+		proxied: rule.proxied,
+		username: rule.username,
+		password: rule.password,
+		param_opt: rule.param_opt,
+		custom_url: rule.custom_url,
+		url_v4: meta.url_v4 || '',
+		url_v6: meta.url_v6 || '',
+		answer: meta.answer || '',
+		http: scoped_http
+	});
+
+	if (u_res.ok) {
+		state.log('info', rule.id, sprintf('Updated %s (%s) to %s: %s', rule.domain, rrtype, p_res.ip, u_res.message));
+		return {
+			ok: true,
+			updated: true,
+			info: {
+				probed_ip: p_res.ip,
+				dns_ip: p_res.ip,
+				dns_source: d_res.source,
+				in_sync: true
+			}
+		};
+	}
+
+	state.log(u_res.fatal ? 'error' : 'warn', rule.id, sprintf('Update %s (%s) failed: %s', rule.domain, rrtype, u_res.message));
+	return {
+		ok: false,
+		fatal: !!u_res.fatal,
+		code: u_res.code || 'update_failed',
+		message: u_res.message,
+		info: {
+			probed_ip: p_res.ip,
+			dns_ip: dns_ip,
+			dns_source: d_res.source,
+			in_sync: false
+		}
+	};
+}
+
+function process_rule(id, force) {
+	let rule = rules_cfg[id];
+	if (!rule) return;
+
+	if (!global_cfg.enabled || !rule.enabled) {
+		state.set_rule_state(id, { state: 'disabled', error_code: null, error_message: null });
+		return;
+	}
+
+	if (!rule.domain) {
+		state.set_rule_state(id, {
+			state: 'error',
+			error_code: 'missing_domain',
+			error_message: 'Domain name is empty'
+		});
+		return;
+	}
+
+	state.set_rule_state(id, { state: 'probing', last_check: time() });
+
+	let families = (rule.ip_mode == 'ipv4') ? [4] : (rule.ip_mode == 'ipv6' ? [6] : [4, 6]);
+	let any_ok = false;
+	let any_updated = false;
+	let fatal_err = null;
+	let temp_err = null;
+	let patch = {};
+
+	for (let fam in families) {
+		let res = process_family(rule, fam, force);
+		patch[(fam == 6) ? 'v6' : 'v4'] = res.info;
+		if (res.ok) {
+			any_ok = true;
+			if (res.updated) any_updated = true;
+		} else if (res.fatal) {
+			fatal_err = res;
+		} else {
+			temp_err = res;
+		}
+	}
+
+	let cur = state.get_rule(id);
+	if (fatal_err) {
+		patch.state = 'error';
+		patch.error_code = fatal_err.code;
+		patch.error_message = fatal_err.message;
+		patch.next_check = 0;
+		state.set_rule_state(id, patch);
+		return;
+	}
+
+	if (temp_err && !(rule.ip_mode == 'dual' && any_ok)) {
+		let retries = (cur?.retry_count || 0) + 1;
+		let delay = state.compute_backoff(retries);
+		patch.state = 'backoff';
+		patch.retry_count = retries;
+		patch.error_code = temp_err.code;
+		patch.error_message = temp_err.message;
+		state.set_rule_state(id, patch);
+		schedule_rule(id, delay);
+		return;
+	}
+
+	patch.state = 'synced';
+	patch.retry_count = 0;
+	patch.error_code = temp_err ? temp_err.code : null;
+	patch.error_message = temp_err ? temp_err.message : null;
+	if (any_updated)
+		patch.last_update = time();
+	state.set_rule_state(id, patch);
+	schedule_rule(id, global_cfg.check_interval);
+}
+
+function process_all(force) {
+	refresh_wan_snapshot();
+	for (let id in rule_order)
+		process_rule(id, force);
+}
+
+function on_netifd_event(ev, msg) {
+	let action = msg?.action;
+	let iface = msg?.interface;
+	if (action != 'ifup' && action != 'ifupdate' && action != 'ifdown')
+		return;
+
+	state.log('debug', 'daemon', sprintf('netifd event: %s on %s', action, iface || 'unknown'));
+
+	if (debounce_timer)
+		debounce_timer.cancel();
+	debounce_timer = uloop.timer(1500, () => {
+		debounce_timer = null;
+		refresh_wan_snapshot();
+		for (let id in rule_order) {
+			let r = rules_cfg[id];
+			if (!r || !r.enabled) continue;
+			if (r.interface == 'auto' || r.interface == iface)
+				process_rule(id, false);
+		}
+	});
+}
+
+function setup_ubus() {
+	conn.publish('ddnsox', {
+		status: {
+			args: {},
+			call: () => state.get_status(rule_order)
+		},
+		sync: {
+			args: { id: '', force: true },
+			call: (req) => {
+				let id = req.args?.id;
+				let force = !!req.args?.force;
+				let queued = [];
+				if (id && length(id) > 0) {
+					if (!rules_cfg[id])
+						return { accepted: false, error: 'Rule not found' };
+					push(queued, id);
+					uloop.timer(10, () => process_rule(id, force));
+				} else {
+					for (let rid in rule_order)
+						push(queued, rid);
+					uloop.timer(10, () => process_all(force));
+				}
+				return { accepted: true, queued: queued };
+			}
+		},
+		probe: {
+			args: { id: '', ip_mode: '', interface: '' },
+			call: (req) => {
+				let r = req.args?.id ? rules_cfg[req.args.id] : null;
+				let mode = req.args?.ip_mode || r?.ip_mode || 'dual';
+				let iface = req.args?.interface || r?.interface || 'auto';
+				let out = { interface: iface, ip_mode: mode };
+				if (mode == 'ipv4' || mode == 'dual') {
+					out.v4 = probe.probe_address(conn, {
+						family: 4, interface: iface, ip_source: r?.ip_source || 'auto',
+						allow_private_ip: r?.allow_private_ip, public_urls: global_cfg.public_ip_urls_v4
+					});
+					if (out.v4.ok && r?.domain)
+						out.v4.dns = dns.lookup_clean(r.domain, 4, global_cfg);
+				}
+				if (mode == 'ipv6' || mode == 'dual') {
+					out.v6 = probe.probe_address(conn, {
+						family: 6, interface: iface, ip_source: r?.ip_source || 'auto',
+						allow_private_ip: r?.allow_private_ip, public_urls: global_cfg.public_ip_urls_v6
+					});
+					if (out.v6.ok && r?.domain)
+						out.v6.dns = dns.lookup_clean(r.domain, 6, global_cfg);
+				}
+				return out;
+			}
+		},
+		get_log: {
+			args: { rule: '', level: '', query: '', limit: 0 },
+			call: (req) => state.get_logs(req.args)
+		},
+		reload: {
+			args: {},
+			call: () => {
+				state.log('info', 'daemon', 'Reloading configuration via ubus');
+				load_config();
+				uloop.timer(20, () => process_all(false));
+				return { reloaded: true };
+			}
+		}
+	});
+
+	conn.listener('network.interface', on_netifd_event);
+}
+
+function main() {
+	uloop.init();
+	conn = ubus.connect();
+	if (!conn) {
+		warn('ddnsoxd: failed to connect to ubus\n');
+		exit(1);
+	}
+
+	load_registry();
+	load_config();
+	setup_ubus();
+
+	state.log('info', 'daemon', 'ddnsoxd started (event-driven ucode daemon)');
+	uloop.timer(200, () => process_all(false));
+
+	periodic_timer = uloop.timer(global_cfg.check_interval * 1000, function tick() {
+		refresh_wan_snapshot();
+		periodic_timer.set(global_cfg.check_interval * 1000);
+	});
+
+	if (type(uloop.signal) == 'function') {
+		uloop.signal('SIGTERM', () => {
+			state.log('info', 'daemon', 'Received SIGTERM, shutting down');
+			uloop.end();
+		});
+	}
+
+	uloop.run();
+}
+
+main();

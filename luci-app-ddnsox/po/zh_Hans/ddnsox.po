@@ -1,0 +1,420 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Language: zh_Hans\n"
+"MIME-Version: 1.0\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "Dynamic DNS"
+msgstr "动态 DNS"
+
+msgid "Overview"
+msgstr "概览"
+
+msgid "Global Settings"
+msgstr "全局设置"
+
+msgid "Log View"
+msgstr "日志查看"
+
+msgid "Synced"
+msgstr "已同步"
+
+msgid "Syncing"
+msgstr "同步中"
+
+msgid "Retrying"
+msgstr "重试中"
+
+msgid "Error"
+msgstr "错误 (Error)"
+
+msgid "Disabled"
+msgstr "已禁用"
+
+msgid "Search DNS provider..."
+msgstr "搜索 DNS 服务商..."
+
+msgid "Clear"
+msgstr "清除"
+
+msgid "Toggle list"
+msgstr "展开/收起列表"
+
+msgid "%d providers matched"
+msgstr "匹配到 %d 个服务商"
+
+msgid "Detected extra quotes or KEY= prefix"
+msgstr "检测到多余引号或 KEY= 前缀"
+
+msgid "Auto-fix"
+msgstr "自动修复"
+
+msgid "Show"
+msgstr "显示"
+
+msgid "Hide"
+msgstr "隐藏"
+
+msgid "All Levels"
+msgstr "全部等级"
+
+msgid "All Rules"
+msgstr "全部规则"
+
+msgid "Filter keyword..."
+msgstr "按关键字过滤..."
+
+msgid "Refresh"
+msgstr "刷新"
+
+msgid "Top"
+msgstr "顶部"
+
+msgid "Bottom"
+msgstr "底部"
+
+msgid "Logs"
+msgstr "日志"
+
+msgid "Daemon Log Buffer"
+msgstr "守护进程日志缓冲"
+
+msgid "Stop DDNS"
+msgstr "停止 DDNS"
+
+msgid "Start DDNS"
+msgstr "启动 DDNS"
+
+msgid "Restart DDNS"
+msgstr "重启 DDNS"
+
+msgid "Sync All"
+msgstr "全部同步"
+
+msgid "Syncing..."
+msgstr "同步中..."
+
+msgid "Triggered immediate sync for all rules."
+msgstr "已触发全部规则立即同步。"
+
+msgid "Unavailable"
+msgstr "不可用"
+
+msgid "None"
+msgstr "无"
+
+msgid "Public WAN IPs"
+msgstr "公网出口 IP"
+
+msgid "Online"
+msgstr "在线"
+
+msgid "No Public IP"
+msgstr "无公网 IP"
+
+msgid "Domain Sync"
+msgstr "域名同步"
+
+msgid "%d Errors"
+msgstr "%d 个异常"
+
+msgid "Healthy"
+msgstr "正常"
+
+msgid "%d active, %d stopped"
+msgstr "%d 个运行中，%d 个已停用"
+
+msgid "DDNSox Daemon"
+msgstr "DDNSox 守护进程"
+
+msgid "Stopped"
+msgstr "已停止"
+
+msgid "Offline"
+msgstr "离线"
+
+msgid "ucode event-driven + DoH"
+msgstr "ucode 事件驱动 + DoH"
+
+msgid "Import /etc/config/ddns"
+msgstr "导入 /etc/config/ddns"
+
+msgid "Imported %d rule(s) from legacy /etc/config/ddns."
+msgstr "已从旧版 /etc/config/ddns 导入 %d 条规则。"
+
+msgid "Legacy /etc/config/ddns detected. Click to migrate existing rules."
+msgstr "检测到旧版 /etc/config/ddns 配置，点击即可自动合并导入。"
+
+msgid "Information"
+msgstr "信息"
+
+msgid "Dual Stack (IPv4 + IPv6)"
+msgstr "双栈 (IPv4 + IPv6)"
+
+msgid "IPv4 (A)"
+msgstr "仅 IPv4 (A)"
+
+msgid "IPv6 (AAAA)"
+msgstr "仅 IPv6 (AAAA)"
+
+msgid "auto (Auto-track default route)"
+msgstr "auto (自动追踪默认路由)"
+
+msgid "offline"
+msgstr "离线"
+
+msgid "Auto (Interface + Public Fallback)"
+msgstr "自动 (接口探测 + 公网回退)"
+
+msgid "Network Interface"
+msgstr "网络接口"
+
+msgid "URL"
+msgstr "公网 URL"
+
+msgid "Enabled"
+msgstr "已启用"
+
+msgid "Lookup Hostname / Domain"
+msgstr "查询主机名 / 域名"
+
+msgid "Standard FQDN, e.g. home.example.com"
+msgstr "标准完整域名，例如 home.example.com"
+
+msgid "DDNS Service Provider"
+msgstr "DDNS 服务提供商"
+
+msgid "Credentials"
+msgstr "认证凭据"
+
+msgid "IP Address Version"
+msgstr "IP 地址版本"
+
+msgid "WAN Interface & Record Options"
+msgstr "WAN 出口与记录选项"
+
+msgid "Used for multi-WAN outbound binding, record TTL, and keep-alive renewal intervals."
+msgstr "用于多 WAN 出口绑定、记录 TTL 及保活续期间隔。"
+
+msgid "IP Address Source"
+msgstr "IP 地址来源"
+
+msgid "Outbound WAN Interface"
+msgstr "出站 WAN 接口"
+
+msgid "Bind this rule to a specific WAN interface for multi-WAN setups, or keep \"auto\"."
+msgstr "多 WAN 场景下可绑定指定外网出口，单线保持 auto 即可。"
+
+msgid "TTL (seconds)"
+msgstr "TTL (秒)"
+
+msgid "Force Interval (seconds)"
+msgstr "强制更新间隔 (秒)"
+
+msgid "Cloudflare Proxy"
+msgstr "Cloudflare 代理 (橙云)"
+
+msgid "Allow Non-Public IPs"
+msgstr "允许非公网 IP"
+
+msgid "Special Environments: Proxy & Private DNS"
+msgstr "特殊环境：代理与私有 DNS"
+
+msgid "Optional overrides for restricted networks or internal enterprise DNS. Leave empty for standard broadband."
+msgstr "仅用于受限网络或企业内网私有 DNS，普通宽带请留空。"
+
+msgid "HTTP / SOCKS5 Proxy"
+msgstr "HTTP / SOCKS5 代理"
+
+msgid "Use when the router cannot reach overseas provider APIs (e.g. Cloudflare/Porkbun) directly. Only provider API updates use this proxy; WAN IP probing is unaffected."
+msgstr "仅当路由器无法直连海外服务商 API（如 Cloudflare/Porkbun）时填写。仅代理更新请求，不影响本机公网 IP 探测。"
+
+msgid "Custom Verification DNS"
+msgstr "自定义校验 DNS"
+
+msgid "Use for internal/private authoritative DNS (e.g. 10.0.0.53) or a custom DoH URL. Leave empty to use the global anti-poisoning DoH servers."
+msgstr "仅用于企业内网私有权威 DNS（如 10.0.0.53）或自定义 DoH 地址；公网域名请留空以使用全局防污染 DoH。"
+
+msgid "Loading logs..."
+msgstr "正在加载日志..."
+
+msgid "Basic Settings"
+msgstr "基本设置"
+
+msgid "Advanced Settings"
+msgstr "高级设置"
+
+msgid "Log File Viewer"
+msgstr "日志查看"
+
+msgid "No logs for this rule yet."
+msgstr "该规则暂无日志。"
+
+msgid "Dismiss"
+msgstr "关闭"
+
+msgid "Save"
+msgstr "保存"
+
+msgid "Please enter a valid domain name."
+msgstr "请输入有效的域名。"
+
+msgid "Saving..."
+msgstr "保存中..."
+
+msgid "Failed to save rule"
+msgstr "保存规则失败"
+
+msgid "Add new services..."
+msgstr "添加新服务..."
+
+msgid "Configure: %s"
+msgstr "配置：%s"
+
+msgid "Services"
+msgstr "服务"
+
+msgid "Name"
+msgstr "名称"
+
+msgid "Registered IP"
+msgstr "注册 IP"
+
+msgid "Last Update / Next Check"
+msgstr "上次更新 / 下次检查"
+
+msgid "Status"
+msgstr "状态"
+
+msgid "Actions"
+msgstr "操作"
+
+msgid "This section contains no values yet"
+msgstr "此区域尚无配置"
+
+msgid "Reload"
+msgstr "重新载入"
+
+msgid "Stop"
+msgstr "停止"
+
+msgid "Start"
+msgstr "启动"
+
+msgid "Edit"
+msgstr "编辑"
+
+msgid "Delete"
+msgstr "删除"
+
+msgid "Last: %s"
+msgstr "上次：%s"
+
+msgid "Next: %s"
+msgstr "下次：%s"
+
+msgid "Event-driven updates + clean DoH verification"
+msgstr "事件驱动更新 + 纯净 DoH 防污染校验"
+
+msgid "Running"
+msgstr "运行中"
+
+msgid "Event-driven Dynamic DNS client with netifd interface tracking and DoH verification."
+msgstr "基于 netifd 事件驱动与 DoH 防污染校验的现代化动态 DNS 客户端。"
+
+msgid "Settings"
+msgstr "设置"
+
+msgid "Configure global event-driven probing, clean DoH verification servers, and log retention."
+msgstr "配置全局事件驱动探测、纯净 DoH 校验服务器与日志保留策略。"
+
+msgid "Service & Scheduling"
+msgstr "服务与调度"
+
+msgid "Control the ucode background daemon and safety-net fallback verification interval."
+msgstr "控制 ucode 后台守护进程及兜底定时校验周期。"
+
+msgid "Enable DDNSox Daemon"
+msgstr "启用 DDNSox 守护进程"
+
+msgid "Fallback Check Interval (s)"
+msgstr "兜底校验间隔 (秒)"
+
+msgid "Safety-net verification interval in addition to real-time netifd ubus events."
+msgstr "除实时 netifd ubus 事件外的低频兜底校验周期。"
+
+msgid "Anti-Poisoning DNS & WAN Probe"
+msgstr "防污染 DNS 与公网探测"
+
+msgid "Bypass local port 53 cache/fake-ip via DoH, and configure fallback public IP probe URLs for CGNAT WANs."
+msgstr "通过 DoH 绕过本地 53 端口缓存或 fake-ip，并为 CGNAT 内网配置公网 IP 回退探测地址。"
+
+msgid "Authoritative NS Fallback"
+msgstr "权威 NS 回退"
+
+msgid "Query the domain authoritative nameserver directly if DoH upstream servers fail."
+msgstr "当 DoH 上游不可用时直接查询域名权威 NS 服务器。"
+
+msgid "DoH Verification Servers"
+msgstr "DoH 校验服务器"
+
+msgid "Used to verify live DNS records without trusting local port 53 cache or fake-ip."
+msgstr "用于校验真实线上 DNS 解析记录，避免受本地 53 端口缓存或 fake-ip 污染。"
+
+msgid "Public IPv4 Probe URLs"
+msgstr "公网 IPv4 探测地址"
+
+msgid "Fallback endpoints when the WAN interface is behind CGNAT or private IPv4."
+msgstr "当 WAN 口处于 CGNAT 或私网 IPv4 后时使用的公网回退探测接口。"
+
+msgid "Public IPv6 Probe URLs"
+msgstr "公网 IPv6 探测地址"
+
+msgid "Logging & Maintenance"
+msgstr "日志与维护"
+
+msgid "Log Level"
+msgstr "日志等级"
+
+msgid "Debug"
+msgstr "调试 (Debug)"
+
+msgid "Info"
+msgstr "信息 (Info)"
+
+msgid "Warning"
+msgstr "警告 (Warning)"
+
+msgid "Log Ring Buffer Size"
+msgstr "日志环形缓冲条数"
+
+msgid "Migrate Legacy Rules"
+msgstr "迁移旧版规则"
+
+msgid "Migrated %d rule(s) from legacy /etc/config/ddns."
+msgstr "已从旧版 /etc/config/ddns 迁移 %d 条规则。"
+
+msgid "Dynamic DNS (DDNSox)"
+msgstr "动态 DNS (DDNSox)"
+
+msgid "Unable to retrieve DDNSox status"
+msgstr "无法获取 DDNSox 运行状态"
+
+msgid "Domain"
+msgstr "域名"
+
+msgid "Provider"
+msgstr "服务商"
+
+msgid "IPv4 / IPv6"
+msgstr "IPv4 / IPv6"
+
+msgid "No DDNS rules configured"
+msgstr "尚未配置任何 DDNS 规则"
+
+msgid "Dynamic DNSox"
+msgstr "动态域名服务"
+
+msgid "DDNSox"
+msgstr "动态域名服务"
