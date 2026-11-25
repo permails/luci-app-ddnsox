@@ -486,7 +486,14 @@ function main() {
 		});
 	}
 
-	uloop.run();
+	try {
+		uloop.run();
+	} catch (e) {
+		let msg = sprintf('[%d] FATAL uloop error: %s\n', time(), e);
+		warn(msg);
+		fs.writefile('/tmp/ddnsox-crash.log', msg);
+		exit(1);
+	}
 }
 
 main();
