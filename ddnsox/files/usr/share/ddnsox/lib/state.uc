@@ -33,6 +33,8 @@ function log(level, rule_id, msg) {
 	push(log_buffer, entry);
 	if (length(log_buffer) > max_log_lines)
 		log_buffer = slice(log_buffer, length(log_buffer) - max_log_lines);
+	if (lvl == 'error' || lvl == 'warn' || lvl == 'info')
+		warn(sprintf('[ddnsox][%s][%s] %s\n', lvl, entry.rule, entry.msg));
 }
 
 function get_logs(filter) {

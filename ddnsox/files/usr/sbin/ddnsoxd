@@ -147,7 +147,12 @@ function schedule_rule(id, delay_sec) {
 	state.set_rule_state(id, { next_check: time() + delay_sec });
 	rule_timers[id] = uloop.timer(ms, () => {
 		delete rule_timers[id];
-		process_rule(id, false);
+		try {
+			process_rule(id, false);
+		} catch (e) {
+			state.log('error', id, 'Unhandled rule timer error: ' + e);
+			schedule_rule(id, 60);
+		}
 	});
 }
 
@@ -361,12 +366,16 @@ function on_netifd_event(ev, msg) {
 		debounce_timer.cancel();
 	debounce_timer = uloop.timer(1500, () => {
 		debounce_timer = null;
-		refresh_wan_snapshot();
-		for (let id in rule_order) {
-			let r = rules_cfg[id];
-			if (!r || !r.enabled) continue;
-			if (r.interface == 'auto' || r.interface == iface)
-				process_rule(id, false);
+		try {
+			refresh_wan_snapshot();
+			for (let id in rule_order) {
+				let r = rules_cfg[id];
+				if (!r || !r.enabled) continue;
+				if (r.interface == 'auto' || r.interface == iface)
+					process_rule(id, false);
+			}
+		} catch (e) {
+			state.log('error', 'daemon', 'Unhandled netifd event error: ' + e);
 		}
 	});
 }
@@ -453,10 +462,20 @@ function main() {
 	setup_ubus();
 
 	state.log('info', 'daemon', 'ddnsoxd started (event-driven ucode daemon)');
-	uloop.timer(200, () => process_all(false));
+	uloop.timer(200, () => {
+		try {
+			process_all(false);
+		} catch (e) {
+			state.log('error', 'daemon', 'Startup sync error: ' + e);
+		}
+	});
 
 	periodic_timer = uloop.timer(global_cfg.check_interval * 1000, function tick() {
-		refresh_wan_snapshot();
+		try {
+			refresh_wan_snapshot();
+		} catch (e) {
+			state.log('error', 'daemon', 'Periodic snapshot error: ' + e);
+		}
 		periodic_timer.set(global_cfg.check_interval * 1000);
 	});
 
