@@ -37,9 +37,11 @@ let rules_cfg = {};
 let rule_order = [];
 let providers_meta = {};
 let adapter_cache = {};
-let rule_timers = {};
-let debounce_timer = null;
-let periodic_timer = null;
+let rule_next_check = {};
+let netifd_pending_at = 0;
+let netifd_pending_ifaces = {};
+let manual_sync_queue = {};
+let main_tick_timer = null;
 
 function load_registry() {
 	let raw = fs.readfile(REGISTRY_PATH);
@@ -138,22 +140,13 @@ function refresh_wan_snapshot() {
 	);
 }
 
+let process_rule = null;
+
 function schedule_rule(id, delay_sec) {
-	if (rule_timers[id]) {
-		rule_timers[id].cancel();
-		delete rule_timers[id];
-	}
-	let ms = (delay_sec > 0 ? delay_sec : 1) * 1000;
-	state.set_rule_state(id, { next_check: time() + delay_sec });
-	rule_timers[id] = uloop.timer(ms, () => {
-		delete rule_timers[id];
-		try {
-			process_rule(id, false);
-		} catch (e) {
-			state.log('error', id, 'Unhandled rule timer error: ' + e);
-			schedule_rule(id, 60);
-		}
-	});
+	let d = (delay_sec > 0) ? delay_sec : 1;
+	let target = time() + d;
+	rule_next_check[id] = target;
+	state.set_rule_state(id, { next_check: target });
 }
 
 function process_family(rule, family, force) {
@@ -276,7 +269,7 @@ function process_family(rule, family, force) {
 	};
 }
 
-function process_rule(id, force) {
+process_rule = function(id, force) {
 	let rule = rules_cfg[id];
 	if (!rule) return;
 
@@ -346,7 +339,7 @@ function process_rule(id, force) {
 		patch.last_update = time();
 	state.set_rule_state(id, patch);
 	schedule_rule(id, global_cfg.check_interval);
-}
+};
 
 function process_all(force) {
 	refresh_wan_snapshot();
@@ -361,23 +354,9 @@ function on_netifd_event(ev, msg) {
 		return;
 
 	state.log('debug', 'daemon', sprintf('netifd event: %s on %s', action, iface || 'unknown'));
-
-	if (debounce_timer)
-		debounce_timer.cancel();
-	debounce_timer = uloop.timer(1500, () => {
-		debounce_timer = null;
-		try {
-			refresh_wan_snapshot();
-			for (let id in rule_order) {
-				let r = rules_cfg[id];
-				if (!r || !r.enabled) continue;
-				if (r.interface == 'auto' || r.interface == iface)
-					process_rule(id, false);
-			}
-		} catch (e) {
-			state.log('error', 'daemon', 'Unhandled netifd event error: ' + e);
-		}
-	});
+	if (iface)
+		netifd_pending_ifaces[iface] = true;
+	netifd_pending_at = time() + 2;
 }
 
 function setup_ubus() {
@@ -396,11 +375,12 @@ function setup_ubus() {
 					if (!rules_cfg[id])
 						return { accepted: false, error: 'Rule not found' };
 					push(queued, id);
-					uloop.timer(10, () => process_rule(id, force));
+					manual_sync_queue[id] = force;
 				} else {
-					for (let rid in rule_order)
+					for (let rid in rule_order) {
 						push(queued, rid);
-					uloop.timer(10, () => process_all(force));
+						manual_sync_queue[rid] = force;
+					}
 				}
 				return { accepted: true, queued: queued };
 			}
@@ -440,7 +420,8 @@ function setup_ubus() {
 			call: () => {
 				state.log('info', 'daemon', 'Reloading configuration via ubus');
 				load_config();
-				uloop.timer(20, () => process_all(false));
+				for (let rid in rule_order)
+					manual_sync_queue[rid] = false;
 				return { reloaded: true };
 			}
 		}
@@ -462,21 +443,57 @@ function main() {
 	setup_ubus();
 
 	state.log('info', 'daemon', 'ddnsoxd started (event-driven ucode daemon)');
-	uloop.timer(200, () => {
-		try {
-			process_all(false);
-		} catch (e) {
-			state.log('error', 'daemon', 'Startup sync error: ' + e);
-		}
-	});
+	let startup_done = false;
+	let last_snapshot_at = 0;
 
-	periodic_timer = uloop.timer(global_cfg.check_interval * 1000, function tick() {
+	main_tick_timer = uloop.timer(300, function tick() {
+		let now = time();
 		try {
-			refresh_wan_snapshot();
+			if (!startup_done) {
+				startup_done = true;
+				last_snapshot_at = now;
+				process_all(false);
+			} else {
+				if (length(keys(manual_sync_queue)) > 0) {
+					let q = manual_sync_queue;
+					manual_sync_queue = {};
+					refresh_wan_snapshot();
+					last_snapshot_at = now;
+					for (let rid, f in q)
+						process_rule(rid, f);
+				}
+
+				if (netifd_pending_at > 0 && now >= netifd_pending_at) {
+					let ifaces_snap = netifd_pending_ifaces;
+					netifd_pending_at = 0;
+					netifd_pending_ifaces = {};
+					refresh_wan_snapshot();
+					last_snapshot_at = now;
+					for (let id in rule_order) {
+						let r = rules_cfg[id];
+						if (!r || !r.enabled) continue;
+						if (r.interface == 'auto' || ifaces_snap[r.interface])
+							process_rule(id, false);
+					}
+				}
+
+				if (now - last_snapshot_at >= global_cfg.check_interval) {
+					last_snapshot_at = now;
+					refresh_wan_snapshot();
+				}
+
+				for (let id in rule_order) {
+					let due = rule_next_check[id];
+					if (due && now >= due) {
+						delete rule_next_check[id];
+						process_rule(id, false);
+					}
+				}
+			}
 		} catch (e) {
-			state.log('error', 'daemon', 'Periodic snapshot error: ' + e);
+			state.log('error', 'daemon', 'Tick loop error: ' + e);
 		}
-		periodic_timer.set(global_cfg.check_interval * 1000);
+		main_tick_timer.set(1000);
 	});
 
 	if (type(uloop.signal) == 'function') {
